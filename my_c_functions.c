@@ -406,3 +406,8 @@ int nbr_inbase(char c, int base)
     return ((c >= '0' && c <= '9') || (c >= 'A' && c <= ('A' + base - 10)) || \
     (c >= 'a' && c <= ('a' + base - 10)));
 }
+
+int	my_isalpha(int c)
+{
+	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
+}

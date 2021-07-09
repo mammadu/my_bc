@@ -53,5 +53,6 @@ int my_str_is_numeric(char* str);
 
 int nbr_inbase(char c, int base);
 
+int	my_isalpha(int c);
 
 #endif
