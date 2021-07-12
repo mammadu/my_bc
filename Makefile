@@ -2,8 +2,7 @@ CC = gcc
 CFLAGS += -Wall -Wextra -g3 -Werror
 CFLAGS_MEM = ${CFLAGS} -fsanitize=address
 NAME = my_bc
-OBJECT_FILES = my_c_functions.o my_bc.o valid_expression.o
-
+OBJECT_FILES = my_c_functions.o my_bc.o valid_expression.o lexer.o parser.o
 
 all: my_bc
 
