@@ -15,15 +15,14 @@ Since we are doing whole number arithmetic,
 
 int main(int argc, char* argv[])
 {
-    int i = 0;
-
-    if(argc > 1 && argc < 3)
+    if(argc > 1 && argc < 3) //run if there is an argument with a string 
     {
-        while(argv[1][i] != '\0')
-        {
-            printf("%c", argv[1][i]);
-            i += 1;
-        }
+        //first call lexer function on string,
+            //It should return an array of arrays with all the Tokens found in the string
+
+        tokens* tokens = lexer(argv[0][1]); 
+        
+
     } 
     return 0;
 }
