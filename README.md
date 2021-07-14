@@ -10,7 +10,10 @@ https://en.wikipedia.org/wiki/Lexical_analysis
 https://en.wikipedia.org/wiki/Parsing
 
 
+# Insert link showing parse tree for calculation
+
 Struct use as reference for the AST on my_bc:
+https://stackoverflow.com/questions/21150454/representing-an-abstract-syntax-tree-in-c#21150567
 
 struct ast_node {
   enum { CONSTANT, ADD, SUB, ASSIGNMENT } class;

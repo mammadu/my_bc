@@ -3,6 +3,8 @@
 
 #include "my_c_functions.h"
 
+#define SYNTAX_ERROR -1
+
 typedef struct tokens_holder {
     char** tokens;      //tokens[0][1] = '+'
     char** token_type;  //token_type[0][1] = "Operator"
@@ -10,7 +12,5 @@ typedef struct tokens_holder {
 } tokens;
 
 int tokens_counter(char* source);
-
-
 
 #endif

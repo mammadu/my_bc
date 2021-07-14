@@ -21,9 +21,20 @@ int main(int argc, char* argv[])
             //It should return an array of arrays with all the Tokens found in the string
 
         tokens* tokens = lexer(argv[0][1]);
-        
-
-
-    } 
-    return 0;
+        if (tokens->token_count == SYNTAX_ERROR)
+        {
+            printf("(standard_in): syntax error");
+            return SYNTAX_ERROR;
+        }
+        tokens = validater(tokens);
+        ast_node* root = parser_tree(tokens);
+        int result = resolve_tree(root);
+        print("%d\n");
+        return 0;
+    }
+    else
+    {
+        printf("input not found, use quotation marks around your calculation");
+        return INPUT_STRING_ERROR;
+    }
 }

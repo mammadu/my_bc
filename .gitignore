@@ -11,3 +11,5 @@
 *.o 
 core.*
 .theia/
+a.out
+test.c
