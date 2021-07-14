@@ -8,3 +8,12 @@ https://en.wikipedia.org/wiki/Lexical_analysis
 
 # Parser information
 https://en.wikipedia.org/wiki/Parsing
+
+
+Abstract syntax tree struct
+struct ast_node {
+  enum { CONSTANT, ADD, SUB, ASSIGNMENT } class;
+  union { int                                 value;
+          struct { struct ast_node* left;    
+                   struct ast_node* right;  } op;
+};
