@@ -20,8 +20,9 @@ int main(int argc, char* argv[])
         //first call lexer function on string,
             //It should return an array of arrays with all the Tokens found in the string
 
-        tokens* tokens = lexer(argv[0][1]); 
+        tokens* tokens = lexer(argv[0][1]);
         
+
 
     } 
     return 0;

@@ -10,7 +10,8 @@ https://en.wikipedia.org/wiki/Lexical_analysis
 https://en.wikipedia.org/wiki/Parsing
 
 
-Abstract syntax tree struct
+Struct use as reference for the AST on my_bc:
+
 struct ast_node {
   enum { CONSTANT, ADD, SUB, ASSIGNMENT } class;
   union { int                                 value;
