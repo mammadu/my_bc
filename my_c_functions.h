@@ -9,6 +9,8 @@
 #define DEC 10
 #define HEX 12
 
+#define SAME 0
+
 char* my_strcpy(char* dst, char* src);
 
 char* my_strdup(char* param_1);
