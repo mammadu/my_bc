@@ -84,7 +84,7 @@ int is_operand(char* token_type)
 }
 
 
-int no_consecutive_operators(tokens* token)
+int consecutive_operators(tokens* token)
 {
      for (int i = 0; i < tokens->token_count - 1; i++) //loop to go through every token
     {
