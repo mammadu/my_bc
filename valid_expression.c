@@ -29,6 +29,72 @@ int valid_characters(tokens* tokens) //check the number token to make sure only 
     return 0; //otherwise return 0 for success
 }
 
+int is_add(char* token_type)
+{
+    if(my_strcmp(token_type[i], ADD) == SAME)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int is_sub(char* token_type)
+{
+    if(my_strcmp(token_type[i], SUB) == SAME)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int is_mult(char* token_type)
+{
+    if(my_strcmp(token_type[i], MULT) == SAME)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int is_div(char* token_type)
+{
+    if(my_strcmp(token_type[i], DIV) == SAME)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int is_mod(char* token_type)
+{
+    if(my_strcmp(token_type[i], MOD) == SAME)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int is_operand(char* token_type)
+{
+    if (is_add(token_type) || is_sub(token_type) || is_mult(token_type) || is_div(token_type) || is_mod(token_type))
+    {
+        return 1;
+    }
+    retun 0;
+}
+
+
+int no_consecutive_operators(tokens* token)
+{
+     for (int i = 0; i < tokens->token_count - 1; i++) //loop to go through every token
+    {
+        if (is_operand(tokens->token_type[i]) && is_operand(tokens->token_type[i])) //check if the token is an operand
+        {
+            return 1
+        }
+    }
+}
+
 //main for testing
 int main (int argc, char** argv)
 {

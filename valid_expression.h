@@ -9,7 +9,7 @@
 #define MULT "MULT"
 #define DIV "DIV"
 #define MOD "MOD"
-#define VAL "LITERAL"
+#define VAL "NUMBERS"
 #define SPACE "SPACE"
 #define OPEN_PAR "OPEN_PAR"
 #define CLOSE_PAR "CLOSE_PAR"
