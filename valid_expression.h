@@ -9,6 +9,7 @@
 #define MULT "MULT"
 #define DIV "DIV"
 #define MOD "MOD"
+#define NEG "NEG" //when '-' is in front of a number token
 #define VAL "NUMBERS"
 #define SPACE "SPACE"
 #define OPEN_PAR "OPEN_PAR"

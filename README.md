@@ -21,3 +21,7 @@ struct ast_node {
           struct { struct ast_node* left;    
                    struct ast_node* right;  } op;
 };
+
+
+# TODO
+Figure out how to deal with negative numbers
