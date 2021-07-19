@@ -31,14 +31,32 @@ int tokens_counter(char* source)
     return token_amount;
 }
 
+char** token_extractor(char* source, int token_count)
+{
+    char** tokens =  malloc(sizeof(char*) * token_count);
+
+
+    return tokens;
+}
+
+char** token_type_extractor(char* source, int token_count)
+{
+    char** tokens_type =  malloc(sizeof(char*) * token_count);
+
+
+    return tokens_type;
+}
+
 tokens* tokenizer(char* source)
 {
-    tokens* source_tokens = malloc(sizeof(tokens));
+    tokens* src_tokens = malloc(sizeof(tokens));
     tokens->token_count = tokens_counter(source);
-    tokens->tokens = malloc(sizeof(char*) * tokens->token_count);
-    tokens->token_type = malloc(sizeof(char*) * tokens->token_count);
+    tokens->tokens = token_extractor(source, tokens->token_count);
+    tokens->token_type = token_type_extractor(source, tokens->token_count);
 
+    return src_tokens;
 }
+
 int main ()
 {
     printf("%d", tokens_counter("1122+2*(3-424)/5"));
