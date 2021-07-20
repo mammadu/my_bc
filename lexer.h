@@ -13,4 +13,6 @@ typedef struct tokens_holder {
 
 int tokens_counter(char* source);
 
+char** token_extractor(char* source, int token_count);
+
 #endif
