@@ -10,13 +10,14 @@
 #define DIV "DIV"
 #define MOD "MOD"
 #define NEG "NEG" //when '-' is in front of a number token
-#define VAL "NUMBERS"
+#define VAL "VAL"
 #define SPACE "SPACE"
 #define OPEN_PAR "OPEN_PAR"
 #define CLOSE_PAR "CLOSE_PAR"
 
 int valid_expression(tokens* tokens);
-int valid_characters(tokens* tokens);
+int invalid_characters(tokens* tokens); //check the number token to make sure only digits 0-9 are in the string
+int consecutive_operators(tokens* token); //checks if there are multiple operators consecutively
 
 
 #endif
