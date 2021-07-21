@@ -16,8 +16,6 @@ void token_strings_initializer(char** src ,int strings_count , int len)
         j = 0;
         i += 1;
     }
-
-    //return src;
 }
 
 //returns amount of tokens in string
@@ -50,22 +48,19 @@ int number_extractor( char* source, char* dst, int index)
     int i = index, j = 0;
     char* temp = malloc(sizeof(char) * my_strlen(source));
     
-
     while(my_isdigit(source[i]))
     {
         temp[j] = source[i];
         
         j += 1;
-        i+= 1;
+        i += 1;
     }
-    
+     
     temp[j] = '\0';
-    printf ("%s", temp);
 
+    dst = my_strcpy(dst, temp);
     free(temp);
-     printf("\n");
 
-    //dst = my_strcpy(dst, temp);
     return i - index;
 }
 
@@ -79,16 +74,15 @@ char** token_extractor(char* source, int token_count)
     {
         if(my_isdigit(source[i]))
         {
-            i += number_extractor(source, tokens[token_index], i);
+            i += number_extractor(source, tokens[token_index], i);     
             token_index+= 1;
-        } 
-        // else
-        // {
-
-        // }
+            if (source[i] == '\0')
+                break;
+        }
+        
+        tokens[token_index][0] = source[i];        
+         token_index+= 1;
     }
-    printf("YES\n");
-
     return tokens;
 }
 
@@ -117,9 +111,14 @@ tokens* tokenizer(char* source)
 
 int main ()
 {
-
     tokens* tok = tokenizer("1122+2*(3-424)/5"); 
-    printf("%d", tokens_counter("1122+2*(3-424)/5"));
+    int i = 0;
+    while (i < tok->token_count)
+    {
+        printf("%s\n", tok->tokens[i]);
+        i += 1;
+    }
+
     return 0;
 }
 //Starting up branch
