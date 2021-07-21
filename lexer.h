@@ -15,4 +15,7 @@ int tokens_counter(char* source);
 
 char** token_extractor(char* source, int token_count);
 
+void token_strings_initializer(char** src ,int strings_count , int len);
+
+
 #endif

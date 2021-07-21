@@ -1,6 +1,24 @@
 #include "lexer.h"
 #include "my_c_functions.c"
 
+void token_strings_initializer(char** src ,int strings_count , int len)
+{
+    int i = 0, j = 0;
+
+    while (i < strings_count)
+    {
+        src[i] = malloc(sizeof(char) * len);
+        while (j < len)
+        {
+            src[i][j] = '\0';
+            j += 1;
+        }
+        j = 0;
+        i += 1;
+    }
+
+    //return src;
+}
 
 //returns amount of tokens in string
     //use to allocate memory in a char** later on
@@ -30,22 +48,33 @@ int tokens_counter(char* source)
 int number_extractor( char* source, char* dst, int index)
 {
     int i = index, j = 0;
-    char* temp;
+    char* temp = malloc(sizeof(char) * my_strlen(source));
+    
+
     while(my_isdigit(source[i]))
     {
         temp[j] = source[i];
+        
         j += 1;
         i+= 1;
     }
+    
+    temp[j] = '\0';
+    printf ("%s", temp);
 
-    dst = my_strdup(temp);
+    free(temp);
+     printf("\n");
+
+    //dst = my_strcpy(dst, temp);
     return i - index;
 }
 
 char** token_extractor(char* source, int token_count)
 {
     char** tokens =  malloc(sizeof(char*) * token_count);
+    token_strings_initializer(tokens, token_count, my_strlen(source));
     int token_index = 0, index_move = 0;
+
     for (int i = 0; source[i] != '\0'; i += 1)
     {
         if(my_isdigit(source[i]))
@@ -58,6 +87,8 @@ char** token_extractor(char* source, int token_count)
 
         // }
     }
+    printf("YES\n");
+
     return tokens;
 }
 
@@ -77,7 +108,7 @@ tokens* tokenizer(char* source)
     src_tokens->token_count = tokens_counter(source);
     
     src_tokens->tokens = token_extractor(source, src_tokens->token_count);
-    printf("HOLA");
+    
 
     //tokens->token_type = token_type_extractor(source, tokens->token_count);
 
