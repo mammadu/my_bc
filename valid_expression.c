@@ -9,6 +9,7 @@ int valid_expression(tokens* tokens)
     int error_val = 0;
     error_val = error_val + invalid_characters(tokens);
     error_val = error_val + consecutive_operators(tokens);
+    error_val = error_val + invalid_parentheses(tokens);
     return error_val;
 }
 
@@ -24,10 +25,14 @@ int invalid_characters(tokens* tokens) //check the number token to make sure onl
                 {
                     return 0;
                 }
+                else
+                {
+                    return 1;
+                }                
             }
         }
     }
-    return 1; //otherwise return 1 meaning the string has invalid characters
+    return 0; //otherwise return 1 meaning the string has invalid characters
 }
 
 int is_add(char* token_type)
@@ -155,6 +160,37 @@ int consecutive_operators(tokens* token) //checks if there are multiple operator
     return 0; //if the outer loop completes, there are no unallowed consecutive operands
 }
 
+int invalid_parentheses(tokens* token)
+{
+    int parentheses_stack = 0;
+    for (int i = 0; i < token->token_count; i++)
+    {
+        if (is_open_par(token->token_type[i])) //if '(', add 1 to stack
+        {
+            parentheses_stack += 1;
+        }
+        else if (is_close_par(token->token_type[i])) //if ')', subtract 1 from stack
+        {
+            parentheses_stack -= 1;
+        }
+        /*
+        //if stack is ever negative, 
+        that means there are more close brackets then open brackets, 
+        therefore there is a syntax error
+        */
+        if (parentheses_stack < 0) 
+        {
+            return 1;
+        }
+    }
+    //if stack is not 0, the counts of '(' and ')' are not equal, therefore there is a syntax error
+    if (parentheses_stack != 0)
+    {
+        return 1;
+    }
+    return 0;
+}
+
 //main for testing invalid_characters()
 // int main (int argc, char** argv)
 // {
@@ -182,18 +218,24 @@ int main()
     int str_count = 4;
     
     char* str[str_count];
-    int i = 0;
-    str[i] = "1";
-    str[i++] = "+";
-    str[i++] = " ";
-    str[i++] = "*";
+    int i = 0;    
+    str[i] = ")";
+    i++;
+    str[i++] = "(";
+    i++;
+    str[i++] = ")";
+    i++;
+    str[i++] = ")";
 
     char* types[str_count];
     i = 0;
-    types[i] = VAL;
-    types[i++] = ADD;
-    types[i++] = SPACE;
-    types[i++] = MULT;
+    types[i] = CLOSE_PAR;
+    i++;
+    types[i] = OPEN_PAR;
+    i++;
+    types[i] = CLOSE_PAR;
+    i++;
+    types[i] = OPEN_PAR;
 
     tokens->token_count = str_count;
     tokens->tokens = malloc(tokens->token_count * sizeof(char*));
