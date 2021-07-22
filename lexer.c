@@ -1,3 +1,15 @@
+#define ADD "ADD"
+#define SUB "SUB"
+#define MULT "MULT"
+#define DIV "DIV"
+#define MOD "MOD"
+// #define NEG "NEG" //when '-' is in front of a number token
+#define VAL "VAL"
+#define SPACE "SPACE"
+#define OPEN_PAR "OPEN_PAR"
+#define CLOSE_PAR "CLOSE_PAR"
+#define UNKNOWN "UNKNOWN"
+
 #include "lexer.h"
 #include "my_c_functions.c"
 
@@ -86,14 +98,33 @@ char** token_extractor(char* source, int token_count)
     return tokens;
 }
 
-char** token_type_extractor(char** tokens, int token_count)
+char** token_type_extractor(char** tokens, int token_count, char* source)
 {
     char** tokens_type =  malloc(sizeof(char*) * token_count);
     token_strings_initializer(tokens_type, token_count, my_strlen(source));    
-
+    
     for(int i = 0; i < token_count; i += 1)
     {
-        if (tokens[i][FIRST_CHAR])
+        if (my_isdigit(tokens[i][FIRST_CHAR]))
+            tokens_type[i] = my_strcpy(tokens_type[i], VAL);
+        else if (tokens[i][FIRST_CHAR] == '+')
+            tokens_type[i] = my_strcpy(tokens_type[i], ADD);
+        else if (tokens[i][FIRST_CHAR] == '-')
+            tokens_type[i] = my_strcpy(tokens_type[i], SUB);
+        else if (tokens[i][FIRST_CHAR] == '*')
+            tokens_type[i] = my_strcpy(tokens_type[i], MULT);
+        else if (tokens[i][FIRST_CHAR] == '/')
+            tokens_type[i] = my_strcpy(tokens_type[i], DIV);
+        else if (tokens[i][FIRST_CHAR] == '%')
+            tokens_type[i] = my_strcpy(tokens_type[i], MOD);
+        else if (tokens[i][FIRST_CHAR] == ' ')
+            tokens_type[i] = my_strcpy(tokens_type[i], SPACE);
+        else if (tokens[i][FIRST_CHAR] == '(')
+            tokens_type[i] = my_strcpy(tokens_type[i], OPEN_PAR);
+        else if (tokens[i][FIRST_CHAR] == ')')
+            tokens_type[i] = my_strcpy(tokens_type[i], CLOSE_PAR);
+        else
+            tokens_type[i] = my_strcpy(tokens_type[i], UNKNOWN);
     }
 
     return tokens_type;
@@ -107,7 +138,7 @@ tokens* tokenizer(char* source)
     
     src_tokens->tokens = token_extractor(source, src_tokens->token_count);
 
-    //tokens->token_type = token_type_extractor(src_tokens->tokens, tokens->token_count);
+    src_tokens->token_type = token_type_extractor(src_tokens->tokens, src_tokens->token_count, source);
 
     return src_tokens;
 }
@@ -119,6 +150,7 @@ int main ()
     while (i < tok->token_count)
     {
         printf("%s\n", tok->tokens[i]);
+        printf("%s\n", tok->token_type[i]);
         i += 1;
     }
 
