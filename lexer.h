@@ -4,6 +4,7 @@
 #include "my_c_functions.h"
 
 #define SYNTAX_ERROR -1
+#define FIRST_CHAR 0
 
 typedef struct tokens_holder {
     char** tokens;      //tokens[0][1] = '+'

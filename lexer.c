@@ -86,11 +86,15 @@ char** token_extractor(char* source, int token_count)
     return tokens;
 }
 
-//To be implemented 
 char** token_type_extractor(char** tokens, int token_count)
 {
     char** tokens_type =  malloc(sizeof(char*) * token_count);
+    token_strings_initializer(tokens_type, token_count, my_strlen(source));    
 
+    for(int i = 0; i < token_count; i += 1)
+    {
+        if (tokens[i][FIRST_CHAR])
+    }
 
     return tokens_type;
 }
@@ -102,9 +106,8 @@ tokens* tokenizer(char* source)
     src_tokens->token_count = tokens_counter(source);
     
     src_tokens->tokens = token_extractor(source, src_tokens->token_count);
-    
 
-    //tokens->token_type = token_type_extractor(source, tokens->token_count);
+    //tokens->token_type = token_type_extractor(src_tokens->tokens, tokens->token_count);
 
     return src_tokens;
 }
