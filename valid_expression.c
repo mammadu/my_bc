@@ -10,6 +10,8 @@ int valid_expression(tokens* tokens)
     error_val = error_val + invalid_characters(tokens);
     error_val = error_val + consecutive_operators(tokens);
     error_val = error_val + invalid_parentheses(tokens);
+    error_val = error_val + spaces_between_numbers(tokens);
+
     return error_val;
 }
 
@@ -28,7 +30,7 @@ int invalid_characters(tokens* tokens) //check the number token to make sure onl
                 else
                 {
                     return 1;
-                }                
+                }
             }
         }
     }
@@ -189,6 +191,46 @@ int invalid_parentheses(tokens* token)
         return 1;
     }
     return 0;
+}
+
+int next_non_space_index(tokens* token, int current_index)
+{
+    /*
+    returns the index of the next non-space
+    */
+    int i = current_index
+    while (i < token->token_count)
+    {
+        if (!(is_space(token->token_type[i])))
+        {
+            break;
+        }
+        i++;
+    }
+    return i;
+}
+
+int spaces_between_numbers(tokens* token)
+{
+    /*if there is a VAL token followed by one or more SPACE tokens, 
+    there should not be another VAL or OPEN_PAR token next
+    */
+
+    for (int i = 0; i < token->token_count; i++)
+    {
+        if (is_val(token->token_type[i])) //check if current token is a VAL
+        {
+            int next_non_space = int next_non_space_index(tokens* token, int current_index);
+            if (next_non_space == token->token_count || is_operand(token->token_type[i]) || is_close_par(token->token_type[i])) //case where the value is followed by only spaces
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+    }
 }
 
 //main for testing invalid_characters()
