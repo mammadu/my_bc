@@ -26,7 +26,12 @@ int main(int argc, char* argv[])
             printf("(standard_in): syntax error");
             return SYNTAX_ERROR;
         }
-        tokens = validater(tokens);
+        int error_val = valid_expression(tokens);
+        if (error_val != 0)
+        {
+            printf("(standard_in): syntax error");
+            return SYNTAX_ERROR;
+        }
         ast_node* root = parser_tree(tokens);
         int result = resolve_tree(root);
         print("%d\n");
