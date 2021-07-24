@@ -198,7 +198,7 @@ int next_non_space_index(tokens* token, int current_index)
     /*
     returns the index of the next non-space
     */
-    int i = current_index
+    int i = current_index;
     while (i < token->token_count)
     {
         if (!(is_space(token->token_type[i])))
@@ -220,10 +220,10 @@ int spaces_between_numbers(tokens* token)
     {
         if (is_val(token->token_type[i])) //check if current token is a VAL
         {
-            int next_non_space = int next_non_space_index(tokens* token, int current_index);
+            int next_non_space = next_non_space_index(token, i);
             if (next_non_space == token->token_count || is_operand(token->token_type[i]) || is_close_par(token->token_type[i])) //case where the value is followed by only spaces
             {
-                return 0;
+                continue;
             }
             else
             {
@@ -231,6 +231,7 @@ int spaces_between_numbers(tokens* token)
             }
         }
     }
+    return 0;
 }
 
 //main for testing invalid_characters()
@@ -253,43 +254,43 @@ int spaces_between_numbers(tokens* token)
 // }
 
 //main for testing consecutive_operators()
-int main()
-{
-    tokens* tokens = malloc(sizeof(tokens));
+// int main()
+// {
+//     tokens* tokens = malloc(sizeof(tokens));
 
-    int str_count = 4;
+//     int str_count = 4;
     
-    char* str[str_count];
-    int i = 0;    
-    str[i] = ")";
-    i++;
-    str[i++] = "(";
-    i++;
-    str[i++] = ")";
-    i++;
-    str[i++] = ")";
+//     char* str[str_count];
+//     int i = 0;    
+//     str[i] = ")";
+//     i++;
+//     str[i++] = "(";
+//     i++;
+//     str[i++] = ")";
+//     i++;
+//     str[i++] = ")";
 
-    char* types[str_count];
-    i = 0;
-    types[i] = CLOSE_PAR;
-    i++;
-    types[i] = OPEN_PAR;
-    i++;
-    types[i] = CLOSE_PAR;
-    i++;
-    types[i] = OPEN_PAR;
+//     char* types[str_count];
+//     i = 0;
+//     types[i] = CLOSE_PAR;
+//     i++;
+//     types[i] = OPEN_PAR;
+//     i++;
+//     types[i] = CLOSE_PAR;
+//     i++;
+//     types[i] = OPEN_PAR;
 
-    tokens->token_count = str_count;
-    tokens->tokens = malloc(tokens->token_count * sizeof(char*));
-    tokens->token_type = malloc(tokens->token_count * sizeof(char*));
+//     tokens->token_count = str_count;
+//     tokens->tokens = malloc(tokens->token_count * sizeof(char*));
+//     tokens->token_type = malloc(tokens->token_count * sizeof(char*));
 
-    for (int i = 0; i < tokens->token_count; i++)
-    {
-        tokens->tokens[i] = my_strdup(str[i]);
-        tokens->token_type[i] = my_strdup(types[i]);
-    }
+//     for (int i = 0; i < tokens->token_count; i++)
+//     {
+//         tokens->tokens[i] = my_strdup(str[i]);
+//         tokens->token_type[i] = my_strdup(types[i]);
+//     }
 
-    int error_val = valid_expression(tokens);
-    printf("error_val = %d\n", error_val);
-    return 0;
-}
+//     int error_val = valid_expression(tokens);
+//     printf("error_val = %d\n", error_val);
+//     return 0;
+// }

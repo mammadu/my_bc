@@ -1,17 +1,4 @@
-#define ADD "ADD"
-#define SUB "SUB"
-#define MULT "MULT"
-#define DIV "DIV"
-#define MOD "MOD"
-// #define NEG "NEG" //when '-' is in front of a number token
-#define VAL "VAL"
-#define SPACE "SPACE"
-#define OPEN_PAR "OPEN_PAR"
-#define CLOSE_PAR "CLOSE_PAR"
-#define UNKNOWN "UNKNOWN"
-
 #include "lexer.h"
-#include "my_c_functions.c"
 
 void token_strings_initializer(char** src ,int strings_count , int len)
 {
@@ -80,7 +67,7 @@ char** token_extractor(char* source, int token_count)
 {
     char** tokens =  malloc(sizeof(char*) * token_count);
     token_strings_initializer(tokens, token_count, my_strlen(source));
-    int token_index = 0, index_move = 0;
+    int token_index = 0;
 
     for (int i = 0; source[i] != '\0'; i += 1)
     {
@@ -143,17 +130,17 @@ tokens* tokenizer(char* source)
     return src_tokens;
 }
 
-int main ()
-{
-    tokens* tok = tokenizer("1122+2*(3-424)/5"); 
-    int i = 0;
-    while (i < tok->token_count)
-    {
-        printf("%s\n", tok->tokens[i]);
-        printf("%s\n", tok->token_type[i]);
-        i += 1;
-    }
+// int main ()
+// {
+//     tokens* tok = tokenizer("1122+2*(3-424)/5"); 
+//     int i = 0;
+//     while (i < tok->token_count)
+//     {
+//         printf("%s\n", tok->tokens[i]);
+//         printf("%s\n", tok->token_type[i]);
+//         i += 1;
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 //Starting up branch
