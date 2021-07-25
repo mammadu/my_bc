@@ -11,30 +11,13 @@ int valid_expression(tokens* tokens)
     error_val = error_val + consecutive_operators(tokens);
     error_val = error_val + invalid_parentheses(tokens);
     error_val = error_val + spaces_between_numbers(tokens);
+    printf("[debug]invalid_characters = %d\n", invalid_characters(tokens));
+    printf("[debug]consecutive_operators = %d\n", consecutive_operators(tokens));
+    printf("[debug]invalid_parentheses = %d\n", invalid_parentheses(tokens));
+    printf("[debug]spaces_between_numbers = %d\n", spaces_between_numbers(tokens));
+
 
     return error_val;
-}
-
-int invalid_characters(tokens* tokens) //check the number token to make sure only digits 0-9 are in the string
-{
-    for (int i = 0; i < tokens->token_count; i++) //loop to go through every token
-    {
-        if (my_strcmp(tokens->token_type[i], VAL) == SAME) //check if the token is a number
-        {
-            for (int j = 0; j < my_strlen(tokens->tokens[i]); j++) //go through token string to check for any outlawed characters
-            {
-                if (tokens->tokens[i][j] < '0' || tokens->tokens[i][j] > '9')
-                {
-                    return 0;
-                }
-                else
-                {
-                    return 1;
-                }
-            }
-        }
-    }
-    return 0; //otherwise return 1 meaning the string has invalid characters
 }
 
 int is_add(char* token_type)
@@ -136,6 +119,28 @@ int is_space(char* token_type)
     return 0;
 }
 
+int is_unknown(char* token_type)
+{
+    if(my_strcmp(token_type, UNKNOWN) == SAME)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int invalid_characters(tokens* tokens) //check the number token to make sure only digits 0-9 are in the string
+{
+    for (int i = 0; i < tokens->token_count; i++) //loop to go through every token
+    {
+        if (is_unknown(tokens->token_type[i])) //check if the token is a UNKNOWN
+        {
+            return 1;
+        }
+    }
+    return 0; //otherwise return 1 meaning the string has invalid characters
+}
+
+
 int consecutive_operators(tokens* token) //checks if there are multiple operators consecutively
 {
     for (int i = 0; i < token->token_count - 1; i++) //loop to go through every token
@@ -198,9 +203,11 @@ int next_non_space_index(tokens* token, int current_index)
     /*
     returns the index of the next non-space
     */
-    int i = current_index;
+    int i = current_index + 1;
     while (i < token->token_count)
     {
+
+        // printf("[debug]i = %d\n",i);        
         if (!(is_space(token->token_type[i])))
         {
             break;
@@ -221,8 +228,11 @@ int spaces_between_numbers(tokens* token)
         if (is_val(token->token_type[i])) //check if current token is a VAL
         {
             int next_non_space = next_non_space_index(token, i);
-            if (next_non_space == token->token_count || is_operand(token->token_type[i]) || is_close_par(token->token_type[i])) //case where the value is followed by only spaces
+            // printf("[debug]next_non_space = %d\n", next_non_space);
+            // printf("[debug]is_operand(token->token_type[i]) = %s\n", token->token_type[i]);
+            if (next_non_space == token->token_count || is_operand(token->token_type[next_non_space]) || is_close_par(token->token_type[next_non_space])) //case where the value is followed by only spaces
             {
+                // printf("[debug]we made it to line 234");
                 continue;
             }
             else

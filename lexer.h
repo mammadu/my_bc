@@ -21,7 +21,7 @@ typedef struct tokens_holder {
     char** tokens;      //tokens[0][1] = '+'
     char** token_type;  //token_type[0][1] = "Operator"
     int token_count;
-} tokens;
+}tokens;
 
 void token_strings_initializer(char** src ,int strings_count , int len);
 
