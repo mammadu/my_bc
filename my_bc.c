@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
         printf("[debug]error_val = %d\n", error_val);
         if (error_val != 0)
         {
-            printf("(standard_in): syntax error");
+            printf("(standard_in): syntax error\n");
             return SYNTAX_ERROR;
         }
         // ast_node* root = parser_tree(tokens);

@@ -9,5 +9,8 @@ int invalid_characters(tokens* tokens); //check the number token to make sure on
 int consecutive_operators(tokens* token); //checks if there are multiple operators consecutively
 int invalid_parentheses(tokens* token);
 int spaces_between_numbers(tokens* token);
+int non_val_after_open_par(tokens* token);
+int non_val_before_close_par(tokens* token);
+
 
 #endif

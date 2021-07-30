@@ -11,10 +11,16 @@ int valid_expression(tokens* tokens)
     error_val = error_val + consecutive_operators(tokens);
     error_val = error_val + invalid_parentheses(tokens);
     error_val = error_val + spaces_between_numbers(tokens);
-    printf("[debug]invalid_characters = %d\n", invalid_characters(tokens));
-    printf("[debug]consecutive_operators = %d\n", consecutive_operators(tokens));
-    printf("[debug]invalid_parentheses = %d\n", invalid_parentheses(tokens));
-    printf("[debug]spaces_between_numbers = %d\n", spaces_between_numbers(tokens));
+    error_val = error_val + non_val_after_open_par(tokens);
+    error_val = error_val + non_val_before_close_par(tokens);
+
+    //below lines are for debugging
+    // printf("[debug]invalid_characters = %d\n", invalid_characters(tokens));
+    // printf("[debug]consecutive_operators = %d\n", consecutive_operators(tokens));
+    // printf("[debug]invalid_parentheses = %d\n", invalid_parentheses(tokens));
+    // printf("[debug]spaces_between_numbers = %d\n", spaces_between_numbers(tokens));
+    // printf("[debug]non_val_after_open_par = %d\n", non_val_after_open_par(tokens));
+    // printf("[debug]non_val_before_close_par = %d\n", non_val_before_close_par(tokens));
 
 
     return error_val;
@@ -140,6 +146,68 @@ int invalid_characters(tokens* tokens) //check the number token to make sure onl
     return 0; //otherwise return 1 meaning the string has invalid characters
 }
 
+int next_non_space_index(tokens* token, int current_index)
+{
+    /*
+    returns the index of the next non-space
+    */
+    int i = current_index + 1;
+    while (i < token->token_count)
+    {
+
+        // printf("[debug]i = %d\n",i);        
+        if (!(is_space(token->token_type[i])))
+        {
+            break;
+        }
+        i++;
+    }
+    return i;
+}
+
+int previous_non_space_index(tokens* token, int current_index)
+{
+    /*
+    returns the index of the previous non-space
+    */
+    int i = current_index - 1;
+    while (i > 0)
+    {
+        if (!(is_space(token->token_type[i])))
+        {
+            break;
+        }
+        i--;
+    }
+    return i;
+}
+
+int spaces_between_numbers(tokens* token)
+{
+    /*if there is a VAL token followed by one or more SPACE tokens, 
+    there should not be another VAL or OPEN_PAR token next
+    */
+
+    for (int i = 0; i < token->token_count; i++)
+    {
+        if (is_val(token->token_type[i])) //check if current token is a VAL
+        {
+            int next_non_space = next_non_space_index(token, i);
+            // printf("[debug]next_non_space = %d\n", next_non_space);
+            // printf("[debug]is_operand(token->token_type[i]) = %s\n", token->token_type[i]);
+            if (next_non_space == token->token_count || is_operand(token->token_type[next_non_space]) || is_close_par(token->token_type[next_non_space])) //case where the value is followed by only spaces
+            {
+                // printf("[debug]we made it to line 234");
+                continue;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 int consecutive_operators(tokens* token) //checks if there are multiple operators consecutively
 {
@@ -147,20 +215,10 @@ int consecutive_operators(tokens* token) //checks if there are multiple operator
     {
         if (is_operand(token->token_type[i])) //check if the token is an operand
         {
-            for(int j = i + 1; j < token->token_count; j++) //loop to check next token
+            int next_non_space = next_non_space_index(token, i); //can possibly optimize by making i==to next non space at end of if statement
+            if(!is_sub(token->token_type[next_non_space]) && is_operand(token->token_type[next_non_space]))
             {
-                if(is_space(token->token_type[j])) //if the token is a space, skip to the next one
-                {
-                    continue;
-                }
-                else if (is_sub(token->token_type[j])) //'-' after another operand is ok
-                {
-                    break;
-                }
-                else if (is_operand(token->token_type[j])) //consecutive operands is not ok, return 1
-                {
-                    return 1;
-                }
+                return 1;
             }
         }
     }
@@ -198,46 +256,41 @@ int invalid_parentheses(tokens* token)
     return 0;
 }
 
-int next_non_space_index(tokens* token, int current_index)
+
+int non_val_after_open_par(tokens* token)
 {
-    /*
-    returns the index of the next non-space
-    */
-    int i = current_index + 1;
-    while (i < token->token_count)
-    {
-
-        // printf("[debug]i = %d\n",i);        
-        if (!(is_space(token->token_type[i])))
-        {
-            break;
-        }
-        i++;
-    }
-    return i;
-}
-
-int spaces_between_numbers(tokens* token)
-{
-    /*if there is a VAL token followed by one or more SPACE tokens, 
-    there should not be another VAL or OPEN_PAR token next
-    */
-
     for (int i = 0; i < token->token_count; i++)
     {
-        if (is_val(token->token_type[i])) //check if current token is a VAL
+        if (is_open_par(token->token_type[i]))
         {
             int next_non_space = next_non_space_index(token, i);
-            // printf("[debug]next_non_space = %d\n", next_non_space);
-            // printf("[debug]is_operand(token->token_type[i]) = %s\n", token->token_type[i]);
-            if (next_non_space == token->token_count || is_operand(token->token_type[next_non_space]) || is_close_par(token->token_type[next_non_space])) //case where the value is followed by only spaces
+            if (next_non_space == token->token_count || (!is_val(token->token_type[next_non_space]) && !is_sub(token->token_type[next_non_space]) && !is_open_par(token->token_type[next_non_space])))
             {
-                // printf("[debug]we made it to line 234");
-                continue;
+                return 1;
             }
             else
             {
+                continue;
+            }
+        }
+    }
+    return 0;
+}
+
+int non_val_before_close_par(tokens* token)
+{
+    for (int i = 0; i < token->token_count; i++)
+    {
+        if (is_close_par(token->token_type[i]))
+        {
+            int previous_non_space = previous_non_space_index(token, i);
+            if (!is_close_par(token->token_type[previous_non_space]) && !is_val(token->token_type[previous_non_space]))
+            {
                 return 1;
+            }
+            else
+            {
+                continue;
             }
         }
     }
