@@ -1,5 +1,5 @@
 #include "lexer.h"
-
+#define FIRST_CHAR 0
 void token_strings_initializer(char** src ,int strings_count , int len)
 {
     int i = 0, j = 0;
@@ -117,6 +117,29 @@ char** token_type_extractor(char** tokens, int token_count, char* source)
     return tokens_type;
 }
 
+int** token_priority(tokens* tokens, int len)
+{
+    int** token_priorities = malloc(sizeof(int*) * tokens->token_count);    
+    
+    for(int i = 0; i < tokens->token_count; i += 1)
+    {
+        token_priorities[i] = malloc(sizeof(int) * len);
+        if (my_isdigit(tokens->tokens[i][FIRST_CHAR]))
+            token_priorities[i][FIRST_CHAR] = PRIORITY_ZERO;
+        else if (tokens->tokens[i][FIRST_CHAR] == '+' || tokens->tokens[i][FIRST_CHAR] == '-')
+            token_priorities[i][FIRST_CHAR] = PRIORITY_TWO;
+        else if (tokens->tokens[i][FIRST_CHAR] == '*' || tokens->tokens[i][FIRST_CHAR] == '/' || tokens->tokens[i][FIRST_CHAR] == '%')
+            token_priorities[i][FIRST_CHAR] = PRIORITY_THREE;
+        else if (tokens->tokens[i][FIRST_CHAR] == '(')
+            token_priorities[i][FIRST_CHAR] = PRIORITY_ONE;
+        else if (tokens->tokens[i][FIRST_CHAR] == ')')
+            token_priorities[i][FIRST_CHAR] = PRIORITY_FOUR;
+        else
+            token_priorities[i][FIRST_CHAR] = NO_PRIORITY;
+    }
+    return token_priorities;
+}
+
 tokens* tokenizer(char* source)
 {
     tokens* src_tokens = malloc(sizeof(tokens));
@@ -127,20 +150,44 @@ tokens* tokenizer(char* source)
 
     src_tokens->token_type = token_type_extractor(src_tokens->tokens, src_tokens->token_count, source);
 
+    src_tokens->token_priority = token_priority(src_tokens, my_strlen(source));
+
+    // for(int i = 0; i < src_tokens->token_count; i += 1)
+    // {
+    //     printf("%d", src_tokens->token_priority[i][0]);
+    // }
+
     return src_tokens;
 }
 
-// int main ()
-// {
-//     tokens* tok = tokenizer("1122+2*(3-424)/5"); 
-//     int i = 0;
-//     while (i < tok->token_count)
-//     {
-//         printf("%s\n", tok->tokens[i]);
-//         printf("%s\n", tok->token_type[i]);
-//         i += 1;
-//     }
+void free_token(tokens* tokens)
+{
+    int i = 0; 
 
-//     return 0;
-// }
+    while(i < tokens->token_count)
+    {
+        free(tokens->tokens[i]);
+        free(tokens->token_type[i]);
+        i += 1;
+    }
+    free(tokens->tokens);
+    free(tokens->token_type);
+    free(tokens);
+}
+
+int main ()
+{
+    tokens* tok = tokenizer("1122+2*(3-424)/5"); 
+    int i = 0;
+    while (i < tok->token_count)
+    {
+        printf("%s\n", tok->tokens[i]);
+        printf("%s\n", tok->token_type[i]);
+        printf("%d\n", tok->token_priority[i][0]);
+        printf("\n");
+        i += 1;
+    }
+
+    return 0;
+}
 //Starting up branch

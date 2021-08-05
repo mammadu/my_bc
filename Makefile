@@ -1,15 +1,15 @@
 CC = gcc
 CFLAGS += -Wall -Wextra -g3 -Werror
-CFLAGS_MEM = ${CFLAGS} -fsanitize=address
+CFLAGS_MEM = ${CFLAGS} #-fsanitize=address
 NAME = my_bc
-OBJECT_FILES = my_c_functions.o my_bc.o lexer.o valid_expression.o #parser.o
+OBJECT_FILES = my_c_functions.o my_bc.o valid_expression.o lexer.o #parser.o
 TEST = valid_expression
 TEST_FILES = my_c_functions.o valid_expression.o lexer.o
 
 all: my_bc
 
 ${NAME}: ${OBJECT_FILES}
-	${CC} -o $@ $^ ${CFLAGS}
+	${CC} -o $@ $^ ${CFLAGS_MEM}
 
 test: ${TEST_FILES}
 	${CC} -o ${TEST} $^ ${CFLAGS}
