@@ -152,10 +152,6 @@ tokens* tokenizer(char* source)
 
     src_tokens->token_priority = token_priority(src_tokens, my_strlen(source));
 
-    // for(int i = 0; i < src_tokens->token_count; i += 1)
-    // {
-    //     printf("%d", src_tokens->token_priority[i][0]);
-    // }
 
     return src_tokens;
 }
@@ -175,19 +171,19 @@ void free_token(tokens* tokens)
     free(tokens);
 }
 
-int main ()
-{
-    tokens* tok = tokenizer("1122+2*(3-424)/5"); 
-    int i = 0;
-    while (i < tok->token_count)
-    {
-        printf("%s\n", tok->tokens[i]);
-        printf("%s\n", tok->token_type[i]);
-        printf("%d\n", tok->token_priority[i][0]);
-        printf("\n");
-        i += 1;
-    }
+// int main ()
+// {
+//     tokens* tok = tokenizer("1122+2*(3-424)/5"); 
+//     int i = 0;
+//     while (i < tok->token_count)
+//     {
+//         printf("%s\n", tok->tokens[i]);
+//         printf("%s\n", tok->token_type[i]);
+//         printf("%d\n", tok->token_priority[i][0]);
+//         printf("\n");
+//         i += 1;
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 //Starting up branch
