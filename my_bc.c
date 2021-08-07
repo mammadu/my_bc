@@ -32,6 +32,8 @@ int main(int argc, char* argv[])
         {
             printf("%s\n", tokens->token_type[i]);
             printf("%s\n", tokens->tokens[i]);
+            printf("%d\n", tokens->token_priority[i][0]);
+            
 
             i += 1;
         }
