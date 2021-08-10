@@ -6,7 +6,7 @@ void token_strings_initializer(char** src ,int strings_count , int len)
 
     while (i < strings_count)
     {
-        src[i] = malloc(sizeof(char) * len);
+        src[i] = malloc(sizeof(char) * len + 1);
         while (j < len)
         {
             src[i][j] = '\0';
@@ -164,10 +164,12 @@ void free_token(tokens* tokens)
     {
         free(tokens->tokens[i]);
         free(tokens->token_type[i]);
+        free(tokens->token_priority[i]);
         i += 1;
     }
     free(tokens->tokens);
     free(tokens->token_type);
+    free(tokens->token_priority);
     free(tokens);
 }
 
