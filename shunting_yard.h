@@ -8,12 +8,16 @@ typedef struct shunting_yard {
     //malloc output_queue as same size as token_size.
     //push index of values and proper operators to output queue
     //last character is null
-    char** output_queue;
+    char** output_queue; // "a b + c d e + * *"
     char** operator_stack;
     int output_queue_count;
+    int operator_stack_count;
+
 
     //use output_queue and operator_stack to create RPN
 } shunting_yard;
 
+shunting_yard* my_rpn(tokens* tokens);
+shunting_yard* syd_mem_alloc(shunting_yard* syd);
 
 #endif
