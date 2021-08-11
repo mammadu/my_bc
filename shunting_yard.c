@@ -19,11 +19,22 @@ shunting_yard* my_rpn(tokens* tokens)
 
     for(int i = 0; i < tokens->token_count; i ++)
     {
-        if (my_isdigit(tokens->tokens[i][FIRST_CHAR])) { 
+        if (my_isdigit(tokens->tokens[i][FIRST_CHAR])) 
+        { 
             syd->output_queue[syd->output_queue_count] = my_strdup(tokens->tokens[i]);
             syd->output_queue_count += 1;
-        } else if (tokens->token_priority[i][FIRST_CHAR] > 1 && tokens->token_priority[i][FIRST_CHAR] < 4) {
-            if(syd->operator_stack_count > 0 && syd->operator_stack[syd->operator_stack_count])
+        } 
+        
+        else if (tokens->token_priority[i][FIRST_CHAR] > 1 && tokens->token_priority[i][FIRST_CHAR] < 4) //Operator entry 
+        {
+            if(syd->operator_stack_count > 0 && tokens->token_priority[i] <= syd->operator_stack_priority[syd->operator_stack_count - 1])
+            {
+                //add operator at the bottom of the stack 
+            } else
+            {
+                //pop top of stack and push tokens->tokens[i]     
+            }
+        
         }
         
     }

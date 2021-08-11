@@ -14,8 +14,6 @@ typedef struct shunting_yard {
     int output_queue_count;
     int operator_stack_count;
     
-
-
     //use output_queue and operator_stack to create RPN
 } shunting_yard;
 
