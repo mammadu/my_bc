@@ -17,7 +17,7 @@ typedef struct shunting_yard {
     //use output_queue and operator_stack to create RPN
 } shunting_yard;
 
-shunting_yard* add_operator_to_stack(shunting_yard* syd, tokens* tokens, int index);
+shunting_yard* push_operator_to_stack(shunting_yard* syd, tokens* tokens, int index);
 
 shunting_yard* my_rpn(tokens* tokens);
 

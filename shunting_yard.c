@@ -11,9 +11,10 @@
     return syd;
  }
 
-shunting_yard* add_operator_to_stack(shunting_yard* syd, tokens* tokens, int index)
+shunting_yard* push_operator_to_stack(shunting_yard* syd, tokens* tokens, int index)
 {
-
+    
+    return syd;
 }
 
 //main function returns a rpn of the tokenized input
@@ -34,7 +35,7 @@ shunting_yard* my_rpn(tokens* tokens)
         {
             if(syd->operator_stack_count > 0 && tokens->token_priority[i] > syd->operator_stack_priority[syd->operator_stack_count - 1])
             {
-                //push operator 
+                //push operator
             } else
             {
                 //pop top of stack and push tokens->tokens[i]     
