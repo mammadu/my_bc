@@ -13,7 +13,8 @@
 
 shunting_yard* push_operator_to_stack(shunting_yard* syd, tokens* tokens, int index)
 {
-    
+    syd->operator_stack_priority[syd->operator_stack_count] =  tokens->token_priority[index];
+    syd->operator_stack[syd->operator_stack_count] = my_strdup(tokens->tokens[index]);
     return syd;
 }
 
@@ -35,12 +36,15 @@ shunting_yard* my_rpn(tokens* tokens)
         {
             if(syd->operator_stack_count > 0 && tokens->token_priority[i] > syd->operator_stack_priority[syd->operator_stack_count - 1])
             {
-                //push operator
-            } else
+                //push operator, push priority, and increment syd->operator_stack_count + 1
+            } else if (syd->operator_stack_count > 0 && tokens->token_priority[i] <= syd->operator_stack_priority[syd->operator_stack_count - 1])
             {
-                //pop top of stack and push tokens->tokens[i]     
+                //pop operator, pop priority
+                //push token[token][i]           
+            }else if(syd->operator_stack_count == 0)
+            {
+                //push operator
             }
-        
         }
         
     }
