@@ -11,6 +11,22 @@
     return syd;
  }
 
+void pop_stack(shunting_yard* syd)
+{
+    operator_stack_index = operator_stack_count - 1;
+    free(syd->operator_stack[operator_stack_index]);
+    free(syd->operator_stack_priority[operator_stack_index]);
+    syd->operator_stack_count -= 1;
+}
+
+void pop_stack_to_queue(shunting_yard* syd)
+{
+    operator_stack_index = operator_stack_count - 1;
+    syd->output_queue[output_queue_count] = my_strdup(syd->operator_stack[operator_stack_index]);
+    syd->output_queue_count += 1;
+    pop_stack(shunting_yard* syd);
+}
+
 shunting_yard* push_operator_to_stack(shunting_yard* syd, tokens* tokens, int index)
 {
     syd->operator_stack_priority[syd->operator_stack_count] =  tokens->token_priority[index];
@@ -46,6 +62,13 @@ shunting_yard* my_rpn(tokens* tokens)
                 //push operator
             }
         }
-        
+        else if (tokens->token_priority[i][FIRST_CHAR] == PRIORITY_FOUR) //dealing with closing parentheses
+        {
+            while (syd->operator_stack_count > 0 && my_strcmp(syd->operator_stack[syd->operator_stack_count - 1],"(") != 0)
+            {
+                pop_stack_to_queue(syd);
+            }
+            pop_stack(syd);
+        }
     }
 }
