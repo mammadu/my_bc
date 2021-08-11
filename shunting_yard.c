@@ -11,6 +11,11 @@
     return syd;
  }
 
+void pop_stack_to_queue()
+{
+    
+}
+
 //main function returns a rpn of the tokenized input
 shunting_yard* my_rpn(tokens* tokens)
 {
@@ -25,6 +30,13 @@ shunting_yard* my_rpn(tokens* tokens)
         } else if (tokens->token_priority[i][FIRST_CHAR] > 1 && tokens->token_priority[i][FIRST_CHAR] < 4) {
             if(syd->operator_stack_count > 0 && syd->operator_stack[syd->operator_stack_count])
         }
-        
+        else if (tokens->token_priority[i][FIRST_CHAR] == PRIORITY_FOUR)
+        {
+            while (syd->operator_stack_count > 0 && my_strcmp(syd->operator_stack[syd->operator_stack_count - 1],"(") != 0)
+            {
+                syd->output_queue[syd->output_queue_count] = my_strdup(syd->operator_stack[syd->operator_stack_count - 1])
+                syd->output_queue_count += 1;
+            }
+        }
     }
 }
