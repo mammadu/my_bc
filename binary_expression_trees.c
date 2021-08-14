@@ -123,7 +123,7 @@ int tree_solver(my_tree* expresion_tree_root)
         }
     }
 
-    if(leaves_checker(anterior_root->rigth) == 1)
+    if(anterior_root->rigth != NULL && leaves_checker(anterior_root->rigth) == 1)
          tree_solver(anterior_root->rigth);
     else
         anterior_root = node_solver(anterior_root);
