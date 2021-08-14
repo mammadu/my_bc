@@ -4,6 +4,8 @@
 
 #include "shunting_yard.h"
 #include "my_c_functions.h"
+#include "my_c_functions.c"
+
 
 #define ROOT 0
 #define RIGTH 1
@@ -20,11 +22,13 @@ typedef struct tree
 
 int leaves_checker(my_tree* node);
 
+my_tree* node_solver(my_tree* node);
+
 my_tree *tree_initializer(char *value);
 
 my_tree* tree_maker(shunting_yard* syd);
 
-int tree_solver(my_tree** expresion_tree);
+int tree_solver(my_tree* expresion_tree);
 
 char* expression_resolver(char* left_leaf, char* root, char* rigth_leaf);
 
