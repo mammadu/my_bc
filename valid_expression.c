@@ -213,7 +213,7 @@ int consecutive_operators(tokens* token) //checks if there are multiple operator
 {
     for (int i = 0; i < token->token_count - 1; i++) //loop to go through every token
     {
-        if (is_operator(token->token_type[i])) //check if the token is an operand
+        if (is_operator(token->token_type[i])) //check if the token is an operator
         {
             int next_non_space = next_non_space_index(token, i); //can possibly optimize by making i==to next non space at end of if statement
             if(!is_sub(token->token_type[next_non_space]) && is_operator(token->token_type[next_non_space]))
@@ -222,7 +222,7 @@ int consecutive_operators(tokens* token) //checks if there are multiple operator
             }
         }
     }
-    return 0; //if the outer loop completes, there are no unallowed consecutive operands
+    return 0; //if the outer loop completes, there are no unallowed consecutive operators
 }
 
 int invalid_parentheses(tokens* token)

@@ -4,6 +4,7 @@
 #include "valid_expression.h"
 #include "my_c_functions.h"
 #include "shunting_yard.h"
+#include "lexer.h"
 
 #define INPUT_STRING_ERROR -2
 

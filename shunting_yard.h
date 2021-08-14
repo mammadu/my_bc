@@ -3,6 +3,7 @@
 
 #include "my_c_functions.h"
 #include "lexer.h"
+#include "valid_expression.h"
 
 typedef struct shunting_yard {
     //malloc output_queue as same size as token_size.
