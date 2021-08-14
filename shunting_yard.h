@@ -10,7 +10,7 @@ typedef struct shunting_yard {
     //last character is null
     char** output_queue; // "a b + c d e + * *"
     char** operator_stack;
-    int** operator_stack_priority;
+    int* operator_stack_priority;
     int output_queue_count;
     int operator_stack_count;
     

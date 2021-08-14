@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
         {
             printf("%s\n", tokens->token_type[i]);
             printf("%s\n", tokens->tokens[i]);
-            printf("%d\n", tokens->token_priority[i][0]);
+            printf("%d\n", tokens->token_priority[i]);
         }
         shunting_yard* rpn = my_rpn(tokens);
         //This while loop is for debugging
@@ -41,12 +41,13 @@ int main(int argc, char* argv[])
             printf("%s", rpn->output_queue[i]);
         }
         printf("\n");
-        printf("rpn->operator_stack_count = %d\n", rpn->operator_stack_count);
-        for (int i = 0; i < rpn->operator_stack_count; i++)
-        {
-            printf("%s", rpn->operator_stack[i]);
-        }
-        printf("\n");
+        // printf("rpn->operator_stack_count = %d\n", rpn->operator_stack_count);
+        // for (int i = 0; i < rpn->operator_stack_count; i++)
+        // {
+        //     printf("%s", rpn->operator_stack[i]);
+        // }
+        // printf("\n");
+        
         // ast_node* root = parser_tree(tokens);
         // int result = resolve_tree(root);
         // print("%d\n");

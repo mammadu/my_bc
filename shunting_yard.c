@@ -4,7 +4,7 @@
  {
     syd->output_queue = malloc(sizeof(char*) * tokens->token_count); 
     syd->operator_stack = malloc(sizeof(char*) * tokens->token_count);
-    syd->operator_stack_priority = malloc(sizeof(int*) * tokens->token_count);
+    syd->operator_stack_priority = malloc(sizeof(int) * tokens->token_count);
     syd->output_queue_count = 0;
     syd->operator_stack_count = 0;
 
@@ -15,7 +15,7 @@ void pop_stack(shunting_yard* syd)
 {
     int operator_stack_index = syd->operator_stack_count - 1;
     free(syd->operator_stack[operator_stack_index]);
-    free(syd->operator_stack_priority[operator_stack_index]);
+    // free(syd->operator_stack_priority[operator_stack_index]);
     syd->operator_stack_count -= 1;
 }
 
@@ -55,18 +55,14 @@ shunting_yard* my_rpn(tokens* tokens)
             // syd->output_queue_count += 1;
         }
 
-        else if (tokens->token_priority[i][FIRST_CHAR] > PRIORITY_ONE && tokens->token_priority[i][FIRST_CHAR] < PRIORITY_FOUR) //Operator entry 
+        else if (tokens->token_priority[i] > PRIORITY_ONE && tokens->token_priority[i] < PRIORITY_FOUR) //Operator entry 
         {
-            printf("syd->operator_stack_count = %d\n", syd->operator_stack_count);
-            printf("syd->operator_stack_count = %d\n", syd->operator_stack_count);
-            printf("syd->operator_stack_count = %d\n", syd->operator_stack_count);
             if(syd->operator_stack_count > 0 && (tokens->token_priority[i] > syd->operator_stack_priority[syd->operator_stack_count - 1]))
             {
                 syd = push_operator_to_stack(syd, tokens, i);
                 //push operator, push priority, and increment syd->operator_stack_count + 1
             } else if (syd->operator_stack_count > 0 && tokens->token_priority[i] <= syd->operator_stack_priority[syd->operator_stack_count - 1])
             {
-                printf("it's poppin out here");
                 pop_stack_to_queue(syd);
                 syd = push_operator_to_stack(syd, tokens, i);
                 //pop operator, pop priority
@@ -77,7 +73,7 @@ shunting_yard* my_rpn(tokens* tokens)
                 //push operator
             }
         }
-        else if (tokens->token_priority[i][FIRST_CHAR] == PRIORITY_FOUR) //dealing with closing parentheses
+        else if (tokens->token_priority[i] == PRIORITY_FOUR) //dealing with closing parentheses
         {
             while (syd->operator_stack_count > 0 && my_strcmp(syd->operator_stack[syd->operator_stack_count - 1],"(") != 0)
             {
@@ -85,6 +81,10 @@ shunting_yard* my_rpn(tokens* tokens)
             }
             pop_stack(syd);
         }
+    }
+    for (int i = syd->operator_stack_count; i > 0; i--)
+    {
+        pop_stack_to_queue(syd);
     }
     return syd;
 }
