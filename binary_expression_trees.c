@@ -20,14 +20,25 @@ my_tree *tree_initializer(char *value)
     
     //initialize tree value
     new_tree->value = my_strdup(value);
-
-    if ((new_tree->left = malloc(sizeof(my_tree *))) == NULL || (new_tree->rigth = malloc(sizeof(my_tree *))) == NULL)
-        printf("Nothing on leaves\n");
         
     new_tree->left = NULL;
     new_tree->rigth = NULL;
 
     return new_tree;
+}
+
+my_tree **pop_tree_array(my_tree **tree_array, int size)
+{
+    my_tree** new_tree_array = malloc(sizeof(my_tree *) * size);
+    int i = 0;
+
+    while(i < size - 2)
+    {
+        new_tree_array[i] = tree_array[i];
+        i += 1;
+    }
+
+    return new_tree_array;
 }
 
 my_tree* tree_maker(shunting_yard* syd)
@@ -45,12 +56,12 @@ my_tree* tree_maker(shunting_yard* syd)
         {
             temporal_root->left = tree_array[tree_index - LEFT];
             temporal_root->rigth = tree_array[tree_index - RIGTH];
-            tree_index -= 2;
+            tree_array = pop_tree_array(tree_array, syd->output_queue_count);
         }
 
         tree_array[tree_index] = temporal_root;
-        tree_index += 1;
 
+        tree_index += 1;
         printf("%s\n", tree_array[i]->value);
     }
     free(temporal_root);
