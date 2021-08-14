@@ -174,7 +174,6 @@ void free_token(tokens* tokens)
     {
         free(tokens->tokens[i]);
         free(tokens->token_type[i]);
-        free(tokens->token_priority[i]);
         i += 1;
     }
     free(tokens->tokens);
