@@ -117,27 +117,37 @@ char** token_type_extractor(char** tokens, int token_count, char* source)
     return tokens_type;
 }
 
-int** token_priority(tokens* tokens, int len)
+int* token_priority(tokens* tokens)
 {
-    int** token_priorities = malloc(sizeof(int*) * tokens->token_count);    
+    int* token_priorities = malloc(sizeof(int) * tokens->token_count);
     
     for(int i = 0; i < tokens->token_count; i += 1)
     {
-        token_priorities[i] = malloc(sizeof(int) * len);
+        // token_priorities[i] = malloc(sizeof(int) * len);
         if (my_isdigit(tokens->tokens[i][FIRST_CHAR]))
-            token_priorities[i][FIRST_CHAR] = PRIORITY_ZERO;
+            token_priorities[i] = PRIORITY_ZERO;
         else if (tokens->tokens[i][FIRST_CHAR] == '+' || tokens->tokens[i][FIRST_CHAR] == '-')
-            token_priorities[i][FIRST_CHAR] = PRIORITY_TWO;
+            token_priorities[i] = PRIORITY_TWO;
         else if (tokens->tokens[i][FIRST_CHAR] == '*' || tokens->tokens[i][FIRST_CHAR] == '/' || tokens->tokens[i][FIRST_CHAR] == '%')
-            token_priorities[i][FIRST_CHAR] = PRIORITY_THREE;
+            token_priorities[i] = PRIORITY_THREE;
         else if (tokens->tokens[i][FIRST_CHAR] == '(')
-            token_priorities[i][FIRST_CHAR] = PRIORITY_ONE;
+            token_priorities[i] = PRIORITY_ONE;
         else if (tokens->tokens[i][FIRST_CHAR] == ')')
-            token_priorities[i][FIRST_CHAR] = PRIORITY_FOUR;
+            token_priorities[i] = PRIORITY_FOUR;
         else
-            token_priorities[i][FIRST_CHAR] = NO_PRIORITY;
+            token_priorities[i] = NO_PRIORITY;
     }
     return token_priorities;
+}
+
+void print_tokens(tokens* tokens)
+{
+    for (int i = 0; i < tokens->token_count; i++)
+    {
+        printf("%s\n", tokens->token_type[i]);
+        printf("%s\n", tokens->tokens[i]);
+        printf("%d\n", tokens->token_priority[i]);
+    }
 }
 
 tokens* tokenizer(char* source)
@@ -150,7 +160,7 @@ tokens* tokenizer(char* source)
 
     src_tokens->token_type = token_type_extractor(src_tokens->tokens, src_tokens->token_count, source);
 
-    src_tokens->token_priority = token_priority(src_tokens, my_strlen(source));
+    src_tokens->token_priority = token_priority(src_tokens);
 
 
     return src_tokens;

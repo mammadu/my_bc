@@ -71,7 +71,7 @@ int is_mod(char* token_type)
     return 0;
 }
 
-int is_operand(char* token_type)
+int is_operator(char* token_type)
 {
     if (is_add(token_type) || is_sub(token_type) || is_mult(token_type) || is_div(token_type) || is_mod(token_type))
     {
@@ -194,8 +194,8 @@ int spaces_between_numbers(tokens* token)
         {
             int next_non_space = next_non_space_index(token, i);
             // printf("[debug]next_non_space = %d\n", next_non_space);
-            // printf("[debug]is_operand(token->token_type[i]) = %s\n", token->token_type[i]);
-            if (next_non_space == token->token_count || is_operand(token->token_type[next_non_space]) || is_close_par(token->token_type[next_non_space])) //case where the value is followed by only spaces
+            // printf("[debug]is_operator(token->token_type[i]) = %s\n", token->token_type[i]);
+            if (next_non_space == token->token_count || is_operator(token->token_type[next_non_space]) || is_close_par(token->token_type[next_non_space])) //case where the value is followed by only spaces
             {
                 // printf("[debug]we made it to line 234");
                 continue;
@@ -213,10 +213,10 @@ int consecutive_operators(tokens* token) //checks if there are multiple operator
 {
     for (int i = 0; i < token->token_count - 1; i++) //loop to go through every token
     {
-        if (is_operand(token->token_type[i])) //check if the token is an operand
+        if (is_operator(token->token_type[i])) //check if the token is an operand
         {
             int next_non_space = next_non_space_index(token, i); //can possibly optimize by making i==to next non space at end of if statement
-            if(!is_sub(token->token_type[next_non_space]) && is_operand(token->token_type[next_non_space]))
+            if(!is_sub(token->token_type[next_non_space]) && is_operator(token->token_type[next_non_space]))
             {
                 return 1;
             }

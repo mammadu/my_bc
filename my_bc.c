@@ -19,28 +19,24 @@ int main(int argc, char* argv[])
     {
         //first call lexer function on string,
             //It should return an array of arrays with all the Tokens found in the string
-        int i = 0;
         tokens* tokens = tokenizer(argv[1]);
         int error_val = valid_expression(tokens);
 
         if (error_val != 0)
         {
-            printf("(standard_in): syntax error");
+            printf("(standard_in): syntax error\n");
             return SYNTAX_ERROR;
         }
-        while (i < tokens->token_count)
-        {
-            printf("%s\n", tokens->token_type[i]);
-            printf("%s\n", tokens->tokens[i]);
-            printf("%d\n", tokens->token_priority[i][0]);
-            
+        // print_tokens(tokens);
 
-            i += 1;
-        }
+        shunting_yard* rpn = my_rpn(tokens);
+        print_output_queue(rpn);
+
         // ast_node* root = parser_tree(tokens);
         // int result = resolve_tree(root);
         // print("%d\n");
         free_token(tokens);
+        free_shunting_yard(rpn);
 
         return 0;
     }

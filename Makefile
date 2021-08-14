@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS += -Wall -Wextra -g3 -Werror
-CFLAGS_MEM = ${CFLAGS} #-fsanitize=address
+CFLAGS_MEM = ${CFLAGS} -fsanitize=address
 NAME = my_bc
-OBJECT_FILES = my_c_functions.o my_bc.o valid_expression.o lexer.o #parser.o
+OBJECT_FILES = my_c_functions.o my_bc.o valid_expression.o lexer.o shunting_yard.o #parser.o
 TEST = valid_expression
 TEST_FILES = my_c_functions.o valid_expression.o lexer.o
 

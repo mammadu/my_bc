@@ -27,11 +27,11 @@
 typedef struct tokens_holder {
     char** tokens;      //tokens[0][1] = '+'
     char** token_type;  //token_type[0][1] = "Operator"
-    int** token_priority;
+    int* token_priority;
     int token_count;
 } tokens;
 
-int** token_priority(tokens* tokens, int len);
+int* token_priority(tokens* tokens);
 
 void token_strings_initializer(char** src ,int strings_count , int len);
 
@@ -46,5 +46,8 @@ char** token_type_extractor(char** tokens, int token_count, char* source);
 tokens* tokenizer(char* source);
 
 void free_token(tokens* tokens);
+
+void print_tokens(tokens* tokens);
+
 
 #endif
