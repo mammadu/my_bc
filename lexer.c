@@ -140,6 +140,16 @@ int* token_priority(tokens* tokens)
     return token_priorities;
 }
 
+void print_tokens(tokens* tokens)
+{
+    for (int i = 0; i < tokens->token_count; i++)
+    {
+        printf("%s\n", tokens->token_type[i]);
+        printf("%s\n", tokens->tokens[i]);
+        printf("%d\n", tokens->token_priority[i]);
+    }
+}
+
 tokens* tokenizer(char* source)
 {
     tokens* src_tokens = malloc(sizeof(tokens));

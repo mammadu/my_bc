@@ -47,4 +47,7 @@ tokens* tokenizer(char* source);
 
 void free_token(tokens* tokens);
 
+void print_tokens(tokens* tokens);
+
+
 #endif

@@ -24,30 +24,14 @@ int main(int argc, char* argv[])
 
         if (error_val != 0)
         {
-            printf("(standard_in): syntax error");
+            printf("(standard_in): syntax error\n");
             return SYNTAX_ERROR;
         }
-        //This while loop is for debugging
-        for (int i = 0; i < tokens->token_count; i++)
-        {
-            printf("%s\n", tokens->token_type[i]);
-            printf("%s\n", tokens->tokens[i]);
-            printf("%d\n", tokens->token_priority[i]);
-        }
+        // print_tokens(tokens);
+
         shunting_yard* rpn = my_rpn(tokens);
-        //This while loop is for debugging
-        for (int i = 0; i < rpn->output_queue_count; i++)
-        {
-            printf("%s", rpn->output_queue[i]);
-        }
-        printf("\n");
-        // printf("rpn->operator_stack_count = %d\n", rpn->operator_stack_count);
-        // for (int i = 0; i < rpn->operator_stack_count; i++)
-        // {
-        //     printf("%s", rpn->operator_stack[i]);
-        // }
-        // printf("\n");
-        
+        print_output_queue(rpn);
+
         // ast_node* root = parser_tree(tokens);
         // int result = resolve_tree(root);
         // print("%d\n");

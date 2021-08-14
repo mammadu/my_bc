@@ -23,4 +23,8 @@ shunting_yard* my_rpn(tokens* tokens);
 
 shunting_yard* syd_mem_alloc(shunting_yard* syd, tokens* tokens);
 
+void print_output_queue(shunting_yard* syd);
+
+void print_operator_stack(shunting_yard* syd);
+
 #endif
