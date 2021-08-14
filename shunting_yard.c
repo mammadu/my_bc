@@ -92,7 +92,7 @@ shunting_yard* my_rpn(tokens* tokens)
                 //pop operator, pop priority
                 //push token[token][i]
             }
-            
+
             else if(syd->operator_stack_count == 0)
             {
 
@@ -126,3 +126,21 @@ shunting_yard* my_rpn(tokens* tokens)
     }
     return syd;
 }
+
+void free_shunting_yard(shunting_yard* syd)
+{
+    for (int i = 0; i < syd->output_queue_count; i++)
+    {
+        free(syd->output_queue[i]);
+    }
+    free(syd->output_queue);
+
+    for (int i = 0; i < syd->operator_stack_count; i++)
+    {
+        free(syd->operator_stack[i]);
+    }
+    free(syd->operator_stack);
+    free(syd->operator_stack_priority);
+    free(syd);
+}
+

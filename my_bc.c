@@ -36,6 +36,7 @@ int main(int argc, char* argv[])
         // int result = resolve_tree(root);
         // print("%d\n");
         free_token(tokens);
+        free_shunting_yard(rpn);
 
         return 0;
     }

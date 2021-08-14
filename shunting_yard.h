@@ -27,4 +27,6 @@ void print_output_queue(shunting_yard* syd);
 
 void print_operator_stack(shunting_yard* syd);
 
+void free_shunting_yard(shunting_yard* syd);
+
 #endif
