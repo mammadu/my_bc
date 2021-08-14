@@ -119,7 +119,7 @@ char** token_type_extractor(char** tokens, int token_count, char* source)
 
 int** token_priority(tokens* tokens, int len)
 {
-    int** token_priorities = malloc(sizeof(int*) * tokens->token_count);    
+    int** token_priorities = malloc(sizeof(int*) * tokens->token_count);
     
     for(int i = 0; i < tokens->token_count; i += 1)
     {

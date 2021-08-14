@@ -13,24 +13,30 @@
 
 void pop_stack(shunting_yard* syd)
 {
-    operator_stack_index = operator_stack_count - 1;
+    int operator_stack_index = syd->operator_stack_count - 1;
     free(syd->operator_stack[operator_stack_index]);
     free(syd->operator_stack_priority[operator_stack_index]);
     syd->operator_stack_count -= 1;
 }
 
-void pop_stack_to_queue(shunting_yard* syd)
+void push_to_queue(shunting_yard* syd, char* item)
 {
-    operator_stack_index = operator_stack_count - 1;
-    syd->output_queue[output_queue_count] = my_strdup(syd->operator_stack[operator_stack_index]);
+    syd->output_queue[syd->output_queue_count] = my_strdup(item);
     syd->output_queue_count += 1;
-    pop_stack(shunting_yard* syd);
 }
 
-shunting_yard* push_operator_to_stack(shunting_yard* syd, tokens* tokens, int index)
+void pop_stack_to_queue(shunting_yard* syd)
+{
+    int operator_stack_index = syd->operator_stack_count - 1;
+    push_to_queue(syd, syd->operator_stack[operator_stack_index]);
+    pop_stack(syd);
+}
+
+shunting_yard* push_operator_to_stack(shunting_yard* syd, tokens* tokens, int index) // does this create a new syd in memory?
 {
     syd->operator_stack_priority[syd->operator_stack_count] =  tokens->token_priority[index];
     syd->operator_stack[syd->operator_stack_count] = my_strdup(tokens->tokens[index]);
+    syd->operator_stack_count += 1;
     return syd;
 }
 
@@ -40,25 +46,34 @@ shunting_yard* my_rpn(tokens* tokens)
     shunting_yard* syd = malloc(sizeof(shunting_yard));
     syd = syd_mem_alloc(syd, tokens);
 
-    for(int i = 0; i < tokens->token_count; i ++)
+    for(int i = 0; i < tokens->token_count; i++)
     {
         if (my_isdigit(tokens->tokens[i][FIRST_CHAR])) 
-        { 
-            syd->output_queue[syd->output_queue_count] = my_strdup(tokens->tokens[i]);
-            syd->output_queue_count += 1;
-        } 
-
-        else if (tokens->token_priority[i][FIRST_CHAR] > 1 && tokens->token_priority[i][FIRST_CHAR] < 4) //Operator entry 
         {
-            if(syd->operator_stack_count > 0 && tokens->token_priority[i] > syd->operator_stack_priority[syd->operator_stack_count - 1])
+            push_to_queue(syd, tokens->tokens[i]); //This line should do the same thing as the next two commented lines
+            // syd->output_queue[syd->output_queue_count] = my_strdup(tokens->tokens[i]);
+            // syd->output_queue_count += 1;
+        }
+
+        else if (tokens->token_priority[i][FIRST_CHAR] > PRIORITY_ONE && tokens->token_priority[i][FIRST_CHAR] < PRIORITY_FOUR) //Operator entry 
+        {
+            printf("syd->operator_stack_count = %d\n", syd->operator_stack_count);
+            printf("syd->operator_stack_count = %d\n", syd->operator_stack_count);
+            printf("syd->operator_stack_count = %d\n", syd->operator_stack_count);
+            if(syd->operator_stack_count > 0 && (tokens->token_priority[i] > syd->operator_stack_priority[syd->operator_stack_count - 1]))
             {
+                syd = push_operator_to_stack(syd, tokens, i);
                 //push operator, push priority, and increment syd->operator_stack_count + 1
             } else if (syd->operator_stack_count > 0 && tokens->token_priority[i] <= syd->operator_stack_priority[syd->operator_stack_count - 1])
             {
+                printf("it's poppin out here");
+                pop_stack_to_queue(syd);
+                syd = push_operator_to_stack(syd, tokens, i);
                 //pop operator, pop priority
-                //push token[token][i]           
+                //push token[token][i]
             }else if(syd->operator_stack_count == 0)
             {
+                syd = push_operator_to_stack(syd, tokens, i);
                 //push operator
             }
         }
@@ -71,4 +86,5 @@ shunting_yard* my_rpn(tokens* tokens)
             pop_stack(syd);
         }
     }
+    return syd;
 }
