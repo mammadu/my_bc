@@ -135,9 +135,10 @@ int tree_solver(my_tree* expresion_tree_root)
 
     while(leaves_checker(temporal_root) > 0)
     {
-        printf("temporal root %s \n", temporal_root->value);
+        printf("            temporal root %s \n", temporal_root->value);
         if(temporal_root->left != NULL)
         {
+            printf("temporal root->left %s  temporal root->right %s \n\n", temporal_root->left->value, temporal_root->rigth->value);
             anterior_root = temporal_root;
             temporal_root = temporal_root->left; 
         }
