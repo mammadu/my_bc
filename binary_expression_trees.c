@@ -4,7 +4,6 @@
 int leaves_checker(my_tree* node)
 {
     int leaf_check = 0;
-    
     if(node->left != NULL || node->rigth != NULL)
         leaf_check = 1;
     
@@ -65,7 +64,6 @@ my_tree* tree_maker(shunting_yard* syd)
         temporal_root = tree_initializer(syd->output_queue[i]);
         temp_tree[i] = tree_initializer(syd->output_queue[i]);
         
-
         //if syd->output_queue[i] is not numeric == operator
         if (my_str_is_numeric(syd->output_queue[i]) == 0)
         {
@@ -74,6 +72,8 @@ my_tree* tree_maker(shunting_yard* syd)
             int rigth =  my_atoi_base(tree_array[tree_index - RIGTH]->value, DECIMAL_BASE);         
             temporal_root->left = tree_pointer_finder(temp_tree, left , syd->output_queue_count);
             temporal_root->rigth = tree_pointer_finder(temp_tree, rigth, syd->output_queue_count);
+            temp_tree[i]->left = temporal_root->left;
+            temp_tree[i]->rigth = temporal_root->rigth;
 
             tree_array = pop_tree_array(tree_array, syd->output_queue_count);
             tree_index -= 2;
@@ -88,7 +88,6 @@ my_tree* tree_maker(shunting_yard* syd)
     
     //printf("Root %s\n rigth %s\n left %s\n", tree_array[ROOT]->value, tree_array[ROOT]->rigth->value, tree_array[ROOT]->left->value);
 
-    free(temporal_root);
     //free tree_array PENDING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     return tree_array[ROOT];
 }
@@ -133,20 +132,21 @@ int tree_solver(my_tree* expresion_tree_root)
     my_tree* temporal_root = expresion_tree_root;
     my_tree* anterior_root = expresion_tree_root;
 
+
     while(leaves_checker(temporal_root) > 0)
     {
+        printf("temporal root %s \n", temporal_root->value);
         if(temporal_root->left != NULL)
         {
             anterior_root = temporal_root;
             temporal_root = temporal_root->left; 
         }
-        if(temporal_root->rigth != NULL)
+        else if(temporal_root->rigth != NULL)
         {
             anterior_root = temporal_root;
             temporal_root = temporal_root->rigth; 
         }
     }
-
     if(anterior_root->rigth != NULL && leaves_checker(anterior_root->rigth) == 1)
          tree_solver(anterior_root->rigth);
     else
@@ -176,7 +176,7 @@ int main()
     my_tree* test_tree = tree_maker(syd);
     int solution = tree_solver(test_tree);
 
-    printf("%d", solution);   
+    printf("solution = %d\n", solution);   
     
     return 0;
 }
