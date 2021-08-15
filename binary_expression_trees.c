@@ -129,24 +129,21 @@ my_tree* node_solver(my_tree* node)
 
 int tree_solver(my_tree* expresion_tree_root)
 {
-    my_tree* temporal_root = expresion_tree_root;
-    int solution = 0;
-
-    while(leaves_checker(temporal_root) > 0)
+    while(leaves_checker(expresion_tree_root) > 0)
     {
-        //printf("            temporal root %s \n", temporal_root->value);
-       //printf("AQUI %s\n", expresion_tree_root->value);
+        printf("            root %s \n", expresion_tree_root->value);
+       printf("AQUI %s\n", expresion_tree_root->value);
 
-        if(temporal_root->left != NULL && leaves_checker(temporal_root->left))
-            tree_solver(temporal_root); 
+        if(expresion_tree_root->left != NULL && leaves_checker(expresion_tree_root->left) == 1)
+            tree_solver(expresion_tree_root->left); 
         
-        if(temporal_root->rigth != NULL && leaves_checker(temporal_root->rigth))
-            tree_solver(temporal_root);
+        if(expresion_tree_root->rigth != NULL && leaves_checker(expresion_tree_root->rigth) == 1)
+            tree_solver(expresion_tree_root->rigth);
          
-        temporal_root = node_solver(temporal_root);
+        expresion_tree_root = node_solver(expresion_tree_root);
     }
 
-    return my_atoi_base(temporal_root->value, DECIMAL_BASE);
+    return my_atoi_base(expresion_tree_root->value, DECIMAL_BASE);
 }
 
 int main()
