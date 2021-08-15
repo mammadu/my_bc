@@ -5,7 +5,7 @@
 #include "shunting_yard.h"
 #include "my_c_functions.h"
 
-
+#define ERROR_DIVISION "Division by zero is not supported"
 #define ROOT 0
 #define RIGHT 1
 #define LEFT 2
@@ -20,6 +20,11 @@ typedef struct tree
     struct tree *right;
 } my_tree;
 
+int division_error(my_tree* node);
+
+int tree_error(my_tree* expression_tree_root, int flag);
+
+int leaves_division(int left, int right, int result);
 
 int leaves_checker(my_tree* node);
 
