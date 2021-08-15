@@ -5,6 +5,7 @@
 #include "my_c_functions.h"
 #include "shunting_yard.h"
 #include "lexer.h"
+#include "binary_expression_trees.h"
 
 #define INPUT_STRING_ERROR -2
 

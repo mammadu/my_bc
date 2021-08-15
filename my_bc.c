@@ -30,8 +30,11 @@ int main(int argc, char* argv[])
         // print_tokens(tokens);
 
         shunting_yard* rpn = my_rpn(tokens);
-        print_output_queue(rpn);
+        //print_output_queue(rpn);
 
+        my_tree* final_tree = tree_expression_solver(rpn);
+
+        free(final_tree);
         // ast_node* root = parser_tree(tokens);
         // int result = resolve_tree(root);
         // print("%d\n");

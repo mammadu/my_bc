@@ -4,7 +4,6 @@
 
 #include "shunting_yard.h"
 #include "my_c_functions.h"
-#include "my_c_functions.c"
 
 
 #define ROOT 0

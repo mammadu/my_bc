@@ -56,7 +56,7 @@ my_tree **pop_tree_array(my_tree **tree_array, int size)
 
 my_tree* tree_pointer_finder(my_tree** tree_array, int value, int size)
 {
-    for(int i = 0; i < size; i++ )
+    for(int i = 0; i < size; i++)
     {
         if(my_atoi_base(tree_array[i]->value, DECIMAL_BASE) == value && tree_array[i]->use == 0)
         {
@@ -64,6 +64,7 @@ my_tree* tree_pointer_finder(my_tree** tree_array, int value, int size)
             return tree_array[i]; 
         }
     }
+    return tree_array[ROOT];
 }
 
 void leaves_init(my_tree **tree_array, my_tree **temp_tree, my_tree *temporal_root, int i, int tree_index, int tree_array_len) 
@@ -153,21 +154,21 @@ my_tree* tree_expression_solver(shunting_yard* syd)
     return tree_array[ROOT];
 }
 
-int main()
-{
-    int rpn_size = 9;
-    char *rpn[] = {"1", "2", "3", "42", "-", "*", "5", "%", "+"};
+// int main()
+// {
+//     int rpn_size = 9;
+//     char *rpn[] = {"1", "2", "3", "42", "-", "*", "5", "%", "+"};
 
-    shunting_yard* syd = malloc(sizeof(shunting_yard));
+//     shunting_yard* syd = malloc(sizeof(shunting_yard));
     
-    syd->output_queue_count = 9;
-    syd->output_queue = malloc(sizeof(char*) * syd->output_queue_count * 10);
+//     syd->output_queue_count = 9;
+//     syd->output_queue = malloc(sizeof(char*) * syd->output_queue_count * 10);
 
 
-    for (int i = 0; i < rpn_size; i+=1)
-        syd->output_queue[i] = my_strdup(rpn[i]);
+//     for (int i = 0; i < rpn_size; i+=1)
+//         syd->output_queue[i] = my_strdup(rpn[i]);
     
-    my_tree* test_tree = tree_expression_solver(syd);
+//     my_tree* test_tree = tree_expression_solver(syd);
    
-    return 0;
-}
+//     return 0;
+// }
