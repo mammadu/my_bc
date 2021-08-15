@@ -16,6 +16,7 @@
 typedef struct tree
 {
     char *value;
+    int use;
     struct tree *left;
     struct tree *rigth;
 } my_tree;
@@ -31,5 +32,9 @@ my_tree* tree_maker(shunting_yard* syd);
 int tree_solver(my_tree* expresion_tree);
 
 char* expression_resolver(char* left_leaf, char* root, char* rigth_leaf);
+
+my_tree* tree_pointer_finder(my_tree** tree_array, int value, int size);
+
+
 
 #endif
