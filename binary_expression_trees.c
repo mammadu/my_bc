@@ -62,32 +62,6 @@ void leaves_init(my_tree **tree_array, my_tree **temp_tree, my_tree *temporal_ro
     temp_tree[i]->rigth = temporal_root->rigth;
 }
 
-my_tree* tree_maker(shunting_yard* syd)
-{
-    int tree_index = 0;
-    my_tree *temporal_root;
-    my_tree **tree_array = malloc(sizeof(my_tree *) * syd->output_queue_count);
-    my_tree **temp_tree = malloc(sizeof(my_tree *) * syd->output_queue_count);
-    
-    for (int i = 0; i < syd->output_queue_count; i++)
-    {
-        temporal_root = tree_initializer(syd->output_queue[i]);
-        temp_tree[i] = tree_initializer(syd->output_queue[i]);
-        
-        if (my_str_is_numeric(syd->output_queue[i]) == 0)
-        {
-            leaves_init(tree_array, temp_tree, temporal_root, i, tree_index, syd->output_queue_count); 
-            tree_array = pop_tree_array(tree_array, syd->output_queue_count);
-            tree_index -= 2;
-        }
-        tree_array[tree_index] = temporal_root;
-        tree_index += 1;
-    }
-    
-    return tree_array[ROOT];
-}
-
-
 char* expression_resolver(char* left_leaf, char* root, char* rigth_leaf)
 {
     int left = my_atoi_base(left_leaf, DECIMAL_BASE);
@@ -138,6 +112,33 @@ int tree_solver(my_tree* expresion_tree_root)
     return my_atoi_base(expresion_tree_root->value, DECIMAL_BASE);
 }
 
+my_tree* tree_expression_solver(shunting_yard* syd)
+{
+    int tree_index = 0;
+    my_tree *temporal_root;
+    my_tree **tree_array = malloc(sizeof(my_tree *) * syd->output_queue_count);
+    my_tree **temp_tree = malloc(sizeof(my_tree *) * syd->output_queue_count);
+    
+    for (int i = 0; i < syd->output_queue_count; i++)
+    {
+        temporal_root = tree_initializer(syd->output_queue[i]);
+        temp_tree[i] = tree_initializer(syd->output_queue[i]);
+        
+        if (my_str_is_numeric(syd->output_queue[i]) == 0)
+        {
+            leaves_init(tree_array, temp_tree, temporal_root, i, tree_index, syd->output_queue_count); 
+            tree_array = pop_tree_array(tree_array, syd->output_queue_count);
+            tree_index -= 2;
+        }
+        tree_array[tree_index] = temporal_root;
+        tree_index += 1;
+    }
+    int solution = tree_solver(tree_array[ROOT]);
+    printf("solution = %d\n", solution);   
+
+    return tree_array[ROOT];
+}
+
 int main()
 {
     int rpn_size = 9;
@@ -153,10 +154,7 @@ int main()
         syd->output_queue[i] = my_strdup(rpn[i]);
 
     
-    my_tree* test_tree = tree_maker(syd);
-    int solution = tree_solver(test_tree);
-
-    printf("solution = %d\n", solution);   
-    
+    my_tree* test_tree = tree_expression_solver(syd);
+   
     return 0;
 }

@@ -27,7 +27,7 @@ my_tree* node_solver(my_tree* node);
 
 my_tree *tree_initializer(char *value);
 
-my_tree* tree_maker(shunting_yard* syd);
+my_tree* tree_expression_solver(shunting_yard* syd);
 
 int tree_solver(my_tree* expresion_tree_root);
 
