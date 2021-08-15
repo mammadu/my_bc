@@ -1,10 +1,10 @@
 #include "binary_expression_trees.h"
 
-//return 0 if both leaves are NULL or 1 if there is at least a left or rigth node 
+//return 0 if both leaves are NULL or 1 if there is at least a left or right node 
 int leaves_checker(my_tree* node)
 {
     int leaf_check = 0;
-    if(node->left != NULL || node->rigth != NULL)
+    if(node->left != NULL || node->right != NULL)
         leaf_check = 1;
     
     return leaf_check;
@@ -21,7 +21,7 @@ my_tree *tree_initializer(char *value)
     new_tree->use = 0;
         
     new_tree->left = NULL;
-    new_tree->rigth = NULL;
+    new_tree->right = NULL;
 
     return new_tree;
 }
@@ -66,32 +66,32 @@ my_tree* tree_pointer_finder(my_tree** tree_array, int value, int size)
     }
 }
 
-void leaves_init(my_tree **tree_array, my_tree **temp_tree, my_tree *temporal_root, int i, int tree_index, int count) 
+void leaves_init(my_tree **tree_array, my_tree **temp_tree, my_tree *temporal_root, int i, int tree_index, int tree_array_len) 
 {
     int left = my_atoi_base(tree_array[tree_index - LEFT]->value, DECIMAL_BASE); 
-    int rigth =  my_atoi_base(tree_array[tree_index - RIGTH]->value, DECIMAL_BASE);         
-    temporal_root->left = tree_pointer_finder(temp_tree, left , count);
-    temporal_root->rigth = tree_pointer_finder(temp_tree, rigth, count);
+    int right =  my_atoi_base(tree_array[tree_index - RIGHT]->value, DECIMAL_BASE);         
+    temporal_root->left = tree_pointer_finder(temp_tree, left , tree_array_len);
+    temporal_root->right = tree_pointer_finder(temp_tree, right, tree_array_len);
     temp_tree[i]->left = temporal_root->left;
-    temp_tree[i]->rigth = temporal_root->rigth;
+    temp_tree[i]->right = temporal_root->right;
 }
 
-char* expression_resolver(char* left_leaf, char* root, char* rigth_leaf)
+char* expression_resolver(char* left_leaf, char* root, char* right_leaf)
 {
     int left = my_atoi_base(left_leaf, DECIMAL_BASE);
-    int rigth = my_atoi_base(rigth_leaf, DECIMAL_BASE);
+    int right = my_atoi_base(right_leaf, DECIMAL_BASE);
     int result = 0;
 
     if(my_strcmp(root, "+") == 0)
-        result = left + rigth;
+        result = left + right;
     else if(my_strcmp(root, "-") == 0)
-        result = left - rigth;
+        result = left - right;
     else if(my_strcmp(root, "*") == 0)
-        result = left * rigth;
+        result = left * right;
     else if(my_strcmp(root, "/") == 0)
-        result = left / rigth;
+        result = left / right;
     else
-        result = left % rigth;
+        result = left % right;
 
     char* resolution = my_itoa_base(result, DECIMAL_BASE);
     
@@ -100,30 +100,31 @@ char* expression_resolver(char* left_leaf, char* root, char* rigth_leaf)
 
 my_tree* node_solver(my_tree* node)
 {
-
-    char* resolution =  expression_resolver(node->left->value, node->value, node->rigth->value);
+    char* resolution =  expression_resolver(node->left->value, node->value, node->right->value);
+    free(node->left);
+    free(node->right);
     node->left = NULL;
-    node->rigth = NULL;
+    node->right = NULL;
     free(node->value);
     node->value = my_strdup(resolution);
 
     return node;
 }
 
-int tree_solver(my_tree* expresion_tree_root)
+int tree_solver(my_tree* expression_tree_root)
 {
-    while(leaves_checker(expresion_tree_root) > 0)
+    while(leaves_checker(expression_tree_root) > 0)
     {
-        if(expresion_tree_root->left != NULL && leaves_checker(expresion_tree_root->left) == 1)
-            tree_solver(expresion_tree_root->left); 
+        if(expression_tree_root->left != NULL && leaves_checker(expression_tree_root->left) == 1)
+            tree_solver(expression_tree_root->left); 
         
-        if(expresion_tree_root->rigth != NULL && leaves_checker(expresion_tree_root->rigth) == 1)
-            tree_solver(expresion_tree_root->rigth);
+        if(expression_tree_root->right != NULL && leaves_checker(expression_tree_root->right) == 1)
+            tree_solver(expression_tree_root->right);
          
-        expresion_tree_root = node_solver(expresion_tree_root);
+        expression_tree_root = node_solver(expression_tree_root);
     }
 
-    return my_atoi_base(expresion_tree_root->value, DECIMAL_BASE);
+    return my_atoi_base(expression_tree_root->value, DECIMAL_BASE);
 }
 
 my_tree* tree_expression_solver(shunting_yard* syd)
