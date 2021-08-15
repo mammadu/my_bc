@@ -53,6 +53,21 @@ my_tree* tree_pointer_finder(my_tree** tree_array, int value, int size)
     }
 }
 
+//add tokens as trees to each index of tree array
+    //if token is an operator
+        //make tree duplicates of prior 2 tokens
+        //index of token that is 2 before current is now duplicate of operator token tree
+        //free tree of index one before and operator tree.
+
+my_tree* tree_duplicate(my_tree* tree)
+{
+    my_tree* duplicate = malloc(sizeof(my_tree));
+    duplicate->value = my_strdup(tree->value);
+    duplicate->left = tree->left;
+    duplicate->rigth = tree->rigth;
+    return duplicate;
+}
+
 my_tree* tree_maker(shunting_yard* syd)
 {
     int tree_index = 0;
@@ -62,31 +77,44 @@ my_tree* tree_maker(shunting_yard* syd)
     
     for (int i = 0; i < syd->output_queue_count; i++)
     {
-        temporal_root = tree_initializer(syd->output_queue[i]);
-        temp_tree[i] = tree_initializer(syd->output_queue[i]);
+        // temporal_root = tree_initializer(syd->output_queue[i]);
+        // temp_tree[i] = tree_initializer(syd->output_queue[i]);
         
+        tree_array[tree_index] = tree_initializer(syd->output_queue[i]);
 
         //if syd->output_queue[i] is not numeric == operator
         if (my_str_is_numeric(syd->output_queue[i]) == 0)
         {
-            //printf("%s\n", tree_array[tree_index - 1]->value);
-            int left = my_atoi_base(tree_array[tree_index - LEFT]->value, DECIMAL_BASE); 
-            int rigth =  my_atoi_base(tree_array[tree_index - RIGTH]->value, DECIMAL_BASE);         
-            temporal_root->left = tree_pointer_finder(temp_tree, left , syd->output_queue_count);
-            temporal_root->rigth = tree_pointer_finder(temp_tree, rigth, syd->output_queue_count);
+            tree_array[tree_index]->left = tree_duplicate(tree_array[tree_index - 2]);
+            tree_array[tree_index]->rigth = tree_duplicate(tree_array[tree_index - 1]);
+            free(tree_array[tree_index - 2]);
+            free(tree_array[tree_index - 1]);
 
-            tree_array = pop_tree_array(tree_array, syd->output_queue_count);
+            tree_array[tree_index - 2] = tree_duplicate(tree_array[tree_index]);
+
+            free(tree_array[tree_index]);
+
             tree_index -= 2;
+            // //printf("%s\n", tree_array[tree_index - 1]->value);
+            // int left = my_atoi_base(tree_array[tree_index - LEFT]->value, DECIMAL_BASE);
+            // int rigth =  my_atoi_base(tree_array[tree_index - RIGTH]->value, DECIMAL_BASE);
+            // temporal_root->left = tree_pointer_finder(temp_tree, left , syd->output_queue_count);
+            // temporal_root->rigth = tree_pointer_finder(temp_tree, rigth, syd->output_queue_count);
+
+            // tree_array = pop_tree_array(tree_array, syd->output_queue_count);
+            // tree_index -= 2;
         }
 
+        tree_index += 1;
 
-        tree_array[tree_index] = temporal_root;
+
+        // tree_array[tree_index] = temporal_root;
         //printf("%s\n", tree_array[tree_index]->value);
 
         tree_index += 1;
     }
     
-    //printf("Root %s\n rigth %s\n left %s\n", tree_array[ROOT]->value, tree_array[ROOT]->rigth->value, tree_array[ROOT]->left->value);
+    printf("Root %s\n rigth %s\n left %s\n", tree_array[ROOT]->value, tree_array[ROOT]->rigth->value, tree_array[ROOT]->left->value);
 
     free(temporal_root);
     //free tree_array PENDING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
