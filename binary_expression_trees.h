@@ -10,16 +10,23 @@
 #define RIGHT 1
 #define LEFT 2
 #define DECIMAL_BASE 10
+#define DIVIDE_BY_ZERO "Error: Division by 0"
 
 
 typedef struct tree
 {
     char *value;
     int use;
+    int divided_by_zero;
     struct tree *left;
     struct tree *right;
 } my_tree;
 
+typedef struct tree_resolution
+{
+    int solution;
+    int error;
+}resolution;
 
 int leaves_checker(my_tree* node);
 
@@ -33,7 +40,7 @@ my_tree *tree_initializer(char *value);
 
 my_tree* tree_expression_solver(shunting_yard* syd);
 
-int tree_solver(my_tree* expression_tree_root);
+resolution* tree_solver(my_tree* expression_tree_root);
 
 char* expression_resolver(char* left_leaf, char* root, char* right_leaf);
 

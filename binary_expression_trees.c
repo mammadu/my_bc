@@ -103,6 +103,13 @@ void leaves_init(my_tree **tree_array, my_tree **temp_tree, my_tree *temporal_ro
 
 char* expression_resolver(char* left_leaf, char* root, char* right_leaf)
 {
+    char* resolution;
+    if(my_strcmp(left_leaf, DIVIDE_BY_ZERO) == 0 || my_strcmp(right_leaf, DIVIDE_BY_ZERO))
+    {
+        resolution = DIVIDE_BY_ZERO;
+        return resolution;
+    }
+
     int left = my_atoi_base(left_leaf, DECIMAL_BASE);
     int right = my_atoi_base(right_leaf, DECIMAL_BASE);
     int result = 0;
@@ -114,11 +121,22 @@ char* expression_resolver(char* left_leaf, char* root, char* right_leaf)
     else if(my_strcmp(root, "*") == 0)
         result = left * right;
     else if(my_strcmp(root, "/") == 0)
-        result = left / right;
+    {
+        if (right == 0)
+        {
+            resolution = DIVIDE_BY_ZERO;
+            return resolution;
+        }
+        else
+        {
+            result = left / right;
+        }
+    }
+        
     else
         result = left % right;
 
-    char* resolution = my_itoa_base(result, DECIMAL_BASE);
+    resolution = my_itoa_base(result, DECIMAL_BASE);
     
     return resolution;
 }
@@ -136,7 +154,7 @@ my_tree* node_solver(my_tree* node)
     return node;
 }
 
-int tree_solver(my_tree* expression_tree_root)
+resolution* tree_solver(my_tree* expression_tree_root)
 {
     while(leaves_checker(expression_tree_root) > 0)
     {
@@ -149,7 +167,20 @@ int tree_solver(my_tree* expression_tree_root)
         expression_tree_root = node_solver(expression_tree_root);
     }
 
-    return my_atoi_base(expression_tree_root->value, DECIMAL_BASE);
+    resolution* resolution = malloc (sizeof(resolution));
+    printf("expression_tree_root->value = %s\n", expression_tree_root->value);
+    if (my_strcmp(expression_tree_root->value, DIVIDE_BY_ZERO) == 0)
+    {
+        resolution->error = 1;
+    }
+    else
+    {
+        resolution->solution = my_atoi_base(expression_tree_root->value, DECIMAL_BASE);;
+        resolution->error = 0;
+    }
+
+
+    return resolution;
 }
 
 int tree_index_evaluation(int tree_index)
@@ -183,8 +214,18 @@ my_tree* tree_expression_solver(shunting_yard* syd)
         tree_array[tree_index] = temporal_root;
         tree_index += 1;
     }
-
-    printf("%d\n", tree_solver(tree_array[ROOT]));   
+    // printf("tree_array[ROOT]->value = %s\n", tree_array[ROOT]->value);
+    
+    resolution* resolution = tree_solver(tree_array[ROOT]);
+    
+    if (resolution->error == 1)
+    {
+        printf("%s\n", DIVIDE_BY_ZERO);
+    }
+    else
+    {
+        printf("%d\n", resolution->solution);
+    }
     return tree_array[ROOT];
 }
 
