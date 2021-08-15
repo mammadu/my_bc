@@ -20,9 +20,11 @@ typedef struct tree
     struct tree *right;
 } my_tree;
 
+my_tree* node_error(my_tree* node);
+
 int division_error(my_tree* node);
 
-int tree_error(my_tree* expression_tree_root, int flag);
+int tree_error(my_tree* expression_tree_root);
 
 int leaves_division(int left, int right, int result);
 

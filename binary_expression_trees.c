@@ -146,6 +146,17 @@ my_tree* node_solver(my_tree* node)
     return node;
 }
 
+my_tree* node_error(my_tree* node)
+{
+    free(node->left);
+    free(node->right);
+    node->left = NULL;
+    node->right = NULL;
+    free(node->value);
+    node->value = my_strdup("ERROR");
+    return node;
+}
+
 int division_error(my_tree* node)
 {
     if(node->right->value != NULL && my_strcmp(node->value, "/") == 0 && my_strcmp(node->right->value, "0") == 0)
@@ -153,23 +164,28 @@ int division_error(my_tree* node)
     return 0;
 }
 
-int tree_error(my_tree* expression_tree_root, int flag)
+int tree_error(my_tree* expression_tree_root)
 {
+    int exit = 0;
+
     while(leaves_checker(expression_tree_root) > 0)
     {
-        if (division_error(expression_tree_root) == 1)
-            flag = 1;
-
         if(expression_tree_root->left != NULL && leaves_checker(expression_tree_root->left) == 1)
-            tree_error(expression_tree_root->left, flag); 
+            tree_error(expression_tree_root->left); 
         
         if(expression_tree_root->right != NULL && leaves_checker(expression_tree_root->right) == 1)
-            tree_error(expression_tree_root->right, flag);
-        
-        expression_tree_root = node_solver(expression_tree_root);
-    }
+            tree_error(expression_tree_root->right);
 
-    return flag;
+        if (division_error(expression_tree_root) == 1 || my_strcmp(expression_tree_root->right->value, "ERROR") == 0 || my_strcmp(expression_tree_root->left->value, "ERROR") == 0)
+            expression_tree_root = node_error(expression_tree_root);
+        else   
+            expression_tree_root = node_solver(expression_tree_root);
+    }
+    
+    if(my_strcmp(expression_tree_root->value, "ERROR") == 0) 
+        exit = 1;
+       
+    return exit;
 }
 
 int tree_solver(my_tree* expression_tree_root)
@@ -219,7 +235,7 @@ my_tree* tree_expression_solver(shunting_yard* syd)
         tree_array[tree_index] = temporal_root;
         tree_index += 1;
     }
-    if (tree_error(tree_array[ROOT], 0) == 1)
+    if (tree_error(tree_array[ROOT]) == 1)
         printf("%s\n", ERROR_DIVISION);
     else
         printf("%d\n", tree_solver(tree_array[ROOT])); 
