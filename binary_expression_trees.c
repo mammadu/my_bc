@@ -52,6 +52,16 @@ my_tree* tree_pointer_finder(my_tree** tree_array, int value, int size)
     }
 }
 
+void leaves_init(my_tree **tree_array, my_tree **temp_tree, my_tree *temporal_root, int i, int tree_index, int count) 
+{
+    int left = my_atoi_base(tree_array[tree_index - LEFT]->value, DECIMAL_BASE); 
+    int rigth =  my_atoi_base(tree_array[tree_index - RIGTH]->value, DECIMAL_BASE);         
+    temporal_root->left = tree_pointer_finder(temp_tree, left , count);
+    temporal_root->rigth = tree_pointer_finder(temp_tree, rigth, count);
+    temp_tree[i]->left = temporal_root->left;
+    temp_tree[i]->rigth = temporal_root->rigth;
+}
+
 my_tree* tree_maker(shunting_yard* syd)
 {
     int tree_index = 0;
@@ -64,31 +74,16 @@ my_tree* tree_maker(shunting_yard* syd)
         temporal_root = tree_initializer(syd->output_queue[i]);
         temp_tree[i] = tree_initializer(syd->output_queue[i]);
         
-        //if syd->output_queue[i] is not numeric == operator
         if (my_str_is_numeric(syd->output_queue[i]) == 0)
         {
-            //printf("%s\n", tree_array[tree_index - 1]->value);
-            int left = my_atoi_base(tree_array[tree_index - LEFT]->value, DECIMAL_BASE); 
-            int rigth =  my_atoi_base(tree_array[tree_index - RIGTH]->value, DECIMAL_BASE);         
-            temporal_root->left = tree_pointer_finder(temp_tree, left , syd->output_queue_count);
-            temporal_root->rigth = tree_pointer_finder(temp_tree, rigth, syd->output_queue_count);
-            temp_tree[i]->left = temporal_root->left;
-            temp_tree[i]->rigth = temporal_root->rigth;
-
+            leaves_init(tree_array, temp_tree, temporal_root, i, tree_index, syd->output_queue_count); 
             tree_array = pop_tree_array(tree_array, syd->output_queue_count);
             tree_index -= 2;
         }
-
-
         tree_array[tree_index] = temporal_root;
-        //printf("%s\n", tree_array[tree_index]->value);
-
         tree_index += 1;
     }
     
-    //printf("Root %s\n rigth %s\n left %s\n", tree_array[ROOT]->value, tree_array[ROOT]->rigth->value, tree_array[ROOT]->left->value);
-
-    //free tree_array PENDING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     return tree_array[ROOT];
 }
 
@@ -131,9 +126,6 @@ int tree_solver(my_tree* expresion_tree_root)
 {
     while(leaves_checker(expresion_tree_root) > 0)
     {
-        printf("            root %s \n", expresion_tree_root->value);
-       printf("AQUI %s\n", expresion_tree_root->value);
-
         if(expresion_tree_root->left != NULL && leaves_checker(expresion_tree_root->left) == 1)
             tree_solver(expresion_tree_root->left); 
         

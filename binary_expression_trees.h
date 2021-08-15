@@ -35,6 +35,7 @@ char* expression_resolver(char* left_leaf, char* root, char* rigth_leaf);
 
 my_tree* tree_pointer_finder(my_tree** tree_array, int value, int size);
 
+void leaves_init(my_tree **tree_array, my_tree **temp_tree, my_tree *temporal_root, int i, int tree_index, int count); 
 
 
 #endif
