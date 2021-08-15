@@ -56,23 +56,47 @@ my_tree **pop_tree_array(my_tree **tree_array, int size)
 
 my_tree* tree_pointer_finder(my_tree** tree_array, int value, int size)
 {
-    for(int i = 0; i < size; i++)
+    int i = 0;
+    while(i < size)
     {
         if(my_atoi_base(tree_array[i]->value, DECIMAL_BASE) == value && tree_array[i]->use == 0)
         {
             tree_array[i]->use = 1;
-            return tree_array[i]; 
+            break;
         }
+        i += 1;
     }
-    return tree_array[ROOT];
+    return tree_array[i];
 }
 
 void leaves_init(my_tree **tree_array, my_tree **temp_tree, my_tree *temporal_root, int i, int tree_index, int tree_array_len) 
 {
+    if (tree_index == 0)
+    {
+        temporal_root->left = tree_initializer("0");
+        temporal_root->right = tree_initializer("0");
+    }
+    else if(tree_index == 1)
+    {
+
+        int left =  my_atoi_base(tree_array[tree_index - RIGHT]->value, DECIMAL_BASE);
+
+        temporal_root->right = tree_pointer_finder(temp_tree, left , tree_array_len);
+        temporal_root->left = tree_initializer("0");
+    }
+    else
+    {
+
     int left = my_atoi_base(tree_array[tree_index - LEFT]->value, DECIMAL_BASE); 
-    int right =  my_atoi_base(tree_array[tree_index - RIGHT]->value, DECIMAL_BASE);         
+
+    int right =  my_atoi_base(tree_array[tree_index - RIGHT]->value, DECIMAL_BASE);
+
+    //printf("%s tree index %d left %d right %d\n",tree_array[i -1]->right->value, tree_index, left, right);
     temporal_root->left = tree_pointer_finder(temp_tree, left , tree_array_len);
+
     temporal_root->right = tree_pointer_finder(temp_tree, right, tree_array_len);
+    }
+
     temp_tree[i]->left = temporal_root->left;
     temp_tree[i]->right = temporal_root->right;
 }
@@ -128,6 +152,17 @@ int tree_solver(my_tree* expression_tree_root)
     return my_atoi_base(expression_tree_root->value, DECIMAL_BASE);
 }
 
+int tree_index_evaluation(int tree_index)
+{
+    int minus = - 2;
+    if (tree_index == 0)
+        minus = 0;
+    else if(tree_index == 1) 
+        minus = -1;
+    
+    return minus;
+}
+
 my_tree* tree_expression_solver(shunting_yard* syd)
 {
     int tree_index = 0;
@@ -139,12 +174,11 @@ my_tree* tree_expression_solver(shunting_yard* syd)
     {
         temporal_root = tree_initializer(syd->output_queue[i]);
         temp_tree[i] = tree_initializer(syd->output_queue[i]);
-        
         if (my_str_is_numeric(syd->output_queue[i]) == 0)
         {
             leaves_init(tree_array, temp_tree, temporal_root, i, tree_index, syd->output_queue_count); 
             tree_array = pop_tree_array(tree_array, syd->output_queue_count);
-            tree_index -= 2;
+            tree_index +=  tree_index_evaluation(tree_index);
         }
         tree_array[tree_index] = temporal_root;
         tree_index += 1;

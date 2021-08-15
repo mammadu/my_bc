@@ -23,6 +23,8 @@ typedef struct tree
 
 int leaves_checker(my_tree* node);
 
+int tree_index_evaluation(int tree_index);
+
 my_tree* node_solver(my_tree* node);
 
 void free_tree(my_tree** tree_array, int size);
