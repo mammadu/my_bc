@@ -107,7 +107,7 @@ char* expression_resolver(char* left_leaf, char* root, char* rigth_leaf)
         result = left * rigth;
     else if(my_strcmp(root, "/") == 0)
         result = left / rigth;
-    else if(my_strcmp(root, "%") == 0)
+    else
         result = left % rigth;
 
     char* resolution = my_itoa_base(result, DECIMAL_BASE);
@@ -130,33 +130,23 @@ my_tree* node_solver(my_tree* node)
 int tree_solver(my_tree* expresion_tree_root)
 {
     my_tree* temporal_root = expresion_tree_root;
-    my_tree* anterior_root = expresion_tree_root;
-
+    int solution = 0;
 
     while(leaves_checker(temporal_root) > 0)
     {
-        printf("            temporal root %s \n", temporal_root->value);
-        if(temporal_root->left != NULL)
-        {
-            printf("temporal root->left %s  temporal root->right %s \n\n", temporal_root->left->value, temporal_root->rigth->value);
-            anterior_root = temporal_root;
-            temporal_root = temporal_root->left; 
-        }
-        else if(temporal_root->rigth != NULL)
-        {
-            anterior_root = temporal_root;
-            temporal_root = temporal_root->rigth; 
-        }
+        //printf("            temporal root %s \n", temporal_root->value);
+       //printf("AQUI %s\n", expresion_tree_root->value);
+
+        if(temporal_root->left != NULL && leaves_checker(temporal_root->left))
+            tree_solver(temporal_root); 
+        
+        if(temporal_root->rigth != NULL && leaves_checker(temporal_root->rigth))
+            tree_solver(temporal_root);
+         
+        temporal_root = node_solver(temporal_root);
     }
-    if(anterior_root->rigth != NULL && leaves_checker(anterior_root->rigth) == 1)
-         tree_solver(anterior_root->rigth);
-    else
-        anterior_root = node_solver(anterior_root);
 
-    if(anterior_root != expresion_tree_root)
-        tree_solver(expresion_tree_root);
-
-    return my_atoi_base(anterior_root->value, DECIMAL_BASE);
+    return my_atoi_base(temporal_root->value, DECIMAL_BASE);
 }
 
 int main()

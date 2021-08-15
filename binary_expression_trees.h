@@ -29,7 +29,7 @@ my_tree *tree_initializer(char *value);
 
 my_tree* tree_maker(shunting_yard* syd);
 
-int tree_solver(my_tree* expresion_tree);
+int tree_solver(my_tree* expresion_tree_root);
 
 char* expression_resolver(char* left_leaf, char* root, char* rigth_leaf);
 
