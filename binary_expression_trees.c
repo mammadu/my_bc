@@ -26,6 +26,19 @@ my_tree *tree_initializer(char *value)
     return new_tree;
 }
 
+void free_tree(my_tree** tree_array, int size)
+{
+    int i = 0;
+
+    while(i < size)
+    {
+        free(tree_array[i]);
+        i += 1;
+    }
+    free(tree_array);
+
+}
+
 my_tree **pop_tree_array(my_tree **tree_array, int size)
 {
     my_tree** new_tree_array = malloc(sizeof(my_tree *) * size);
@@ -36,6 +49,7 @@ my_tree **pop_tree_array(my_tree **tree_array, int size)
         new_tree_array[i] = tree_array[i];
         i += 1;
     }
+    //free_tree(tree_array, size);
 
     return new_tree_array;
 }
@@ -133,9 +147,8 @@ my_tree* tree_expression_solver(shunting_yard* syd)
         tree_array[tree_index] = temporal_root;
         tree_index += 1;
     }
-    int solution = tree_solver(tree_array[ROOT]);
-    printf("solution = %d\n", solution);   
 
+    printf("%d\n", tree_solver(tree_array[ROOT]));   
     return tree_array[ROOT];
 }
 
@@ -152,7 +165,6 @@ int main()
 
     for (int i = 0; i < rpn_size; i+=1)
         syd->output_queue[i] = my_strdup(rpn[i]);
-
     
     my_tree* test_tree = tree_expression_solver(syd);
    

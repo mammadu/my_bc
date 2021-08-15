@@ -21,9 +21,12 @@ typedef struct tree
     struct tree *rigth;
 } my_tree;
 
+
 int leaves_checker(my_tree* node);
 
 my_tree* node_solver(my_tree* node);
+
+void free_tree(my_tree** tree_array, int size);
 
 my_tree *tree_initializer(char *value);
 
