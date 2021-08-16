@@ -28,13 +28,15 @@ int tree_error(my_tree* expression_tree_root);
 
 int leaves_division(int left, int right, int result);
 
+my_tree **pop_tree_array(my_tree **tree_array, int size);
+
 int leaves_checker(my_tree* node);
 
 int tree_index_evaluation(int tree_index);
 
 my_tree* node_solver(my_tree* node);
 
-void free_tree(my_tree** tree_array, int size);
+void free_tree(my_tree** tree_array, int tree_size);
 
 my_tree *tree_initializer(char *value);
 
@@ -48,5 +50,6 @@ my_tree* tree_pointer_finder(my_tree** tree_array, int value, int size);
 
 void leaves_init(my_tree **tree_array, my_tree **temp_tree, my_tree *temporal_root, int i, int tree_index, int tree_array_len); 
 
+my_tree **tree_array_initializer(shunting_yard* syd);
 
 #endif
