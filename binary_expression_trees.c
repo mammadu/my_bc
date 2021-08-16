@@ -52,45 +52,6 @@ my_tree **pop_tree_array(my_tree **tree_array, int size)
     return new_tree_array;
 }
 
-my_tree* tree_pointer_finder(my_tree** tree_array, int value, int size)
-{
-    int i = 0;
-    while(i < size)
-    {
-        if(my_atoi_base(tree_array[i]->value, DECIMAL_BASE) == value && tree_array[i]->use == 0)
-        {
-            tree_array[i]->use = 1;
-            break;
-        }
-        i += 1;
-    }
-    return tree_array[i];
-}
-
-void leaves_init(my_tree **tree_array, my_tree **temp_tree, my_tree *temporal_root, int i, int tree_index, int tree_array_len) 
-{
-    if (tree_index == 0)
-    {
-        temporal_root->left = tree_initializer("0");
-        temporal_root->right = tree_initializer("0");
-    }
-    else if(tree_index == 1)
-    {
-        int left =  my_atoi_base(tree_array[tree_index - RIGHT]->value, DECIMAL_BASE);
-        temporal_root->right = tree_pointer_finder(temp_tree, left , tree_array_len);
-        temporal_root->left = tree_initializer("0");
-    }
-    else
-    {
-        int left = my_atoi_base(tree_array[tree_index - LEFT]->value, DECIMAL_BASE); 
-        int right =  my_atoi_base(tree_array[tree_index - RIGHT]->value, DECIMAL_BASE);
-        temporal_root->left = tree_pointer_finder(temp_tree, left , tree_array_len);
-        temporal_root->right = tree_pointer_finder(temp_tree, right, tree_array_len);
-    }
-    temp_tree[i]->left = temporal_root->left;
-    temp_tree[i]->right = temporal_root->right;
-}
-
 int leaves_division(int left, int right, int result)
 {
     if (right == 0)
@@ -238,7 +199,6 @@ int tree_index_evaluation(int tree_index)
 //     return tree_array[ROOT];
 
 // }
-
 my_tree **tree_array_initializer(shunting_yard* syd)
 {
     my_tree** new_tree_array = malloc(sizeof(my_tree*) * syd->output_queue_count);
@@ -249,26 +209,69 @@ my_tree **tree_array_initializer(shunting_yard* syd)
     return new_tree_array;
 }
 
+void leaves_init(my_tree **tree_array, int index) 
+{
+    int use_counter = 0;
+
+    if (index == 0)
+    {
+        tree_array[index]->left = tree_initializer("0");
+        tree_array[index]->right = tree_initializer("0");
+    }
+    else if(tree_index == 1)
+    {
+        tree_array[index--]->use = 1;
+        tree_array[index]->right = tree_array[index--];
+        tree_array[index]->left = tree_initializer("0");
+    }
+    
+    for(int i = index - 1; i >= 0 && use_counter < 2; i--)
+    {
+        if(tree_array[i]->use == 0 && use_counter == 0)
+        {
+            tree_array[index]->right = tree_array[i];
+            tree_array[i]->use = 1;
+            use_counter += 1;
+        } 
+        else if (tree_array[i]->use == 0 && use_counter == 1)
+        {
+            tree_array[index]->left = tree_array[i];
+            tree_array[i]->use = 1;
+            use_counter += 1;
+        }
+    }
+}
+
+my_tree* tree_pointer_finder(my_tree** tree_array, int size)
+{
+    my_tree* node;
+    for(int i = 0; i < size); i++)
+    {
+        if(tree_array[i]->use == 0)
+        {
+            node = tree_array[i];
+            break;
+        }
+    }
+    return node;
+}
+
 my_tree* tree_expression_solver(shunting_yard* syd)
 {
     int tree_index = 0;
     my_tree **tree_array = tree_array_initializer(syd);
-    
+
     for (int i = 0; i < syd->output_queue_count; i++)
-    {
         if (my_str_is_numeric(syd->output_queue[i]) == 0)
-        {
-            leaves_init(tree_array, temp_tree, temporal_root, i, tree_index, syd->output_queue_count); 
-            tree_array = pop_tree_array(tree_array, tree_index);
-            tree_index +=  tree_index_evaluation(tree_index);
-        }
-        tree_array[tree_index] = temporal_root;
-        tree_index += 1;
-    }
-    if (tree_error(tree_array[ROOT]) == 1)
+            leaves_init(tree_array, i); 
+    
+    my_tree *root = tree_pointer_finder(tree_array, syd->output_queue_count);
+
+    if (tree_error(root) == 1)
         printf("%s\n", ERROR_DIVISION);
     else
-        printf("%d\n", tree_solver(tree_array[ROOT])); 
+        printf("%d\n", tree_solver(root)); 
 
     free_tree(temp_tree, syd->output_queue_count);
-    return tree_array[ROOT];
+    return root;
+}

@@ -46,9 +46,9 @@ int tree_solver(my_tree* expression_tree_root);
 
 char* expression_resolver(char* left_leaf, char* root, char* right_leaf);
 
-my_tree* tree_pointer_finder(my_tree** tree_array, int value, int size);
+my_tree* tree_pointer_finder(my_tree** tree_array, int size);
 
-void leaves_init(my_tree **tree_array, my_tree **temp_tree, my_tree *temporal_root, int i, int tree_index, int tree_array_len); 
+void leaves_init(my_tree **tree_array, int index);
 
 my_tree **tree_array_initializer(shunting_yard* syd);
 
