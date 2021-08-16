@@ -218,10 +218,10 @@ void leaves_init(my_tree **tree_array, int index)
         tree_array[index]->left = tree_initializer("0");
         tree_array[index]->right = tree_initializer("0");
     }
-    else if(tree_index == 1)
+    else if(index == 1)
     {
-        tree_array[index--]->use = 1;
-        tree_array[index]->right = tree_array[index--];
+        tree_array[ROOT]->use = 1;
+        tree_array[index]->right = tree_array[ROOT];
         tree_array[index]->left = tree_initializer("0");
     }
     
@@ -245,7 +245,7 @@ void leaves_init(my_tree **tree_array, int index)
 my_tree* tree_pointer_finder(my_tree** tree_array, int size)
 {
     my_tree* node;
-    for(int i = 0; i < size); i++)
+    for(int i = 0; i < size; i++)
     {
         if(tree_array[i]->use == 0)
         {
@@ -258,7 +258,6 @@ my_tree* tree_pointer_finder(my_tree** tree_array, int size)
 
 my_tree* tree_expression_solver(shunting_yard* syd)
 {
-    int tree_index = 0;
     my_tree **tree_array = tree_array_initializer(syd);
 
     for (int i = 0; i < syd->output_queue_count; i++)
@@ -272,6 +271,6 @@ my_tree* tree_expression_solver(shunting_yard* syd)
     else
         printf("%d\n", tree_solver(root)); 
 
-    free_tree(temp_tree, syd->output_queue_count);
+    //free_tree(tree_array, syd->output_queue_count);
     return root;
 }
