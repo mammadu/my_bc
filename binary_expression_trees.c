@@ -26,12 +26,11 @@ my_tree *tree_initializer(char *value)
     return new_tree;
 }
 
-void free_tree(my_tree** tree_array, int tree_size )
+void free_tree(my_tree** tree_array, int tree_size, my_tree* root)
 {
-    for(int i = 0; i < tree_size; i++)
-    {
-        printf(" i = %d value %s\n", i,tree_array[i]->value);
-    }
+    for (int i = 0; i < tree_size; i++);
+    
+    free(root->value);
     free(tree_array);
 }
 
@@ -171,35 +170,6 @@ int tree_index_evaluation(int tree_index)
     return minus;
 }
 
-// my_tree* tree_expression_solver(shunting_yard* syd)
-// {
-//     int tree_index = 0;
-//     my_tree *temporal_root;
-//     my_tree **tree_array = malloc(sizeof(my_tree*) * tree_size);
-//     my_tree **temp_tree = malloc(sizeof(my_tree*) * tree_size);
-    
-//     for (int i = 0; i < syd->output_queue_count; i++)
-//     {
-//         temporal_root = tree_initializer(syd->output_queue[i]);
-//         temp_tree[i] = tree_initializer(syd->output_queue[i]);
-//         if (my_str_is_numeric(syd->output_queue[i]) == 0)
-//         {
-//             leaves_init(tree_array, temp_tree, temporal_root, i, tree_index, syd->output_queue_count); 
-//             tree_array = pop_tree_array(tree_array, tree_index);
-//             tree_index +=  tree_index_evaluation(tree_index);
-//         }
-//         tree_array[tree_index] = temporal_root;
-//         tree_index += 1;
-//     }
-//     if (tree_error(tree_array[ROOT]) == 1)
-//         printf("%s\n", ERROR_DIVISION);
-//     else
-//         printf("%d\n", tree_solver(tree_array[ROOT])); 
-
-//     free_tree(temp_tree, syd->output_queue_count);
-//     return tree_array[ROOT];
-
-// }
 my_tree **tree_array_initializer(shunting_yard* syd)
 {
     my_tree** new_tree_array = malloc(sizeof(my_tree*) * syd->output_queue_count);
@@ -272,7 +242,7 @@ my_tree* tree_expression_solver(shunting_yard* syd)
     else
         printf("%d\n", tree_solver(root)); 
 
-    //free_tree(tree_array, syd->output_queue_count);
-    free(tree_array);
+    free_tree(tree_array, syd->output_queue_count, root);
+
     return root;
 }

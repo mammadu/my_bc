@@ -36,7 +36,7 @@ int tree_index_evaluation(int tree_index);
 
 my_tree* node_solver(my_tree* node);
 
-void free_tree(my_tree** tree_array, int tree_size);
+void free_tree(my_tree** tree_array, int tree_size, my_tree* root);
 
 my_tree *tree_initializer(char *value);
 
