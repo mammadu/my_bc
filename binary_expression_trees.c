@@ -93,7 +93,8 @@ my_tree* node_solver(my_tree* node)
     node->right = NULL;
     free(node->value);
     node->value = my_strdup(resolution);
-
+    free(resolution);
+    
     return node;
 }
 
@@ -272,5 +273,7 @@ my_tree* tree_expression_solver(shunting_yard* syd)
         printf("%d\n", tree_solver(root)); 
 
     //free_tree(tree_array, syd->output_queue_count);
+    free(tree_array);
+
     return root;
 }
