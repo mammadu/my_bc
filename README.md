@@ -1,8 +1,5 @@
 # my_bc
 
-# How to write github Readmes
-https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
-
 # lexer information
 https://en.wikipedia.org/wiki/Lexical_analysis
 
@@ -20,13 +17,5 @@ https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 Struct use as reference for the AST on my_bc:
 https://stackoverflow.com/questions/21150454/representing-an-abstract-syntax-tree-in-c#21150567
 
-struct ast_node {
-  enum { CONSTANT, ADD, SUB, ASSIGNMENT } class;
-  union { int                                 value;
-          struct { struct ast_node* left;    
-                   struct ast_node* right;  } op;
-};
-
-
-# TODO
-Figure out how to deal with negative numbers
+# Building a Binary Expression Tree
+https://en.wikipedia.org/wiki/Binary_expression_tree
