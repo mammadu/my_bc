@@ -85,13 +85,17 @@ char* expression_resolver(char* left_leaf, char* root, char* right_leaf)
 my_tree* node_solver(my_tree* node)
 {
     char* resolution =  expression_resolver(node->left->value, node->value, node->right->value);
-
+    free(node->right->value);
+    free(node->left->value);
+    node->left->value = NULL;
+    node->right->value = NULL;
     free(node->left);
     free(node->right);
     node->left = NULL;
     node->right = NULL;
     free(node->value);
     node->value = my_strdup(resolution);
+    
     free(resolution);
     
     return node;
@@ -135,6 +139,9 @@ int tree_error(my_tree* expression_tree_root)
             expression_tree_root = node_error(expression_tree_root);
         else   
             expression_tree_root = node_solver(expression_tree_root);
+
+        //if()
+
     }
     
     if(my_strcmp(expression_tree_root->value, "ERROR") == 0) 
