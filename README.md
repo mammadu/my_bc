@@ -29,19 +29,19 @@
 4. To clean/remove the .o files, type "make clean" in your terminal
  
 # **** Useful documentation to understand my_bc **** 
-# Lexer information
+## Lexer information
 https://en.wikipedia.org/wiki/Lexical_analysis
  
-# Parser information
+## Parser information
 https://en.wikipedia.org/wiki/Parsing
  
-# Reverse polish notation converter/evaluator
+## Reverse polish notation converter/evaluator
 https://www.dcode.fr/reverse-polish-notation
  
-# Shunting-yard algorithm
+## Shunting-yard algorithm
 https://en.wikipedia.org/wiki/Shunting-yard_algorithm
  
-# Binary Expression Trees
+## Binary Expression Trees
 https://en.wikipedia.org/wiki/Binary_expression_tree
  
 
