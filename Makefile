@@ -16,7 +16,7 @@ NAME = my_bc
 all: my_bc
 
 ${NAME}: ${OBJECT_FILES}
-	${CC} -o $@ $^ ${CFLAGS_MEM}
+	${CC} -o $@ $^ ${CFLAGS}
 
 
 # A "phony" target to remove built files and backups
